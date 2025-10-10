@@ -3,6 +3,8 @@ import { Bagel_Fat_One, Space_Grotesk } from "next/font/google";
 import "./globals.css";
 import HeaderNav from "@/components/HeaderNav";
 import DevelopmentAlert from "@/components/DevelopmentAlert";
+import ContextProvider from "./provider";
+import { headers } from "next/headers";
 
 const bagelFatOne = Bagel_Fat_One({
 	variable: "--font-bagel-fat-one",
@@ -21,18 +23,23 @@ export const metadata: Metadata = {
 		"Pawfund is a fundraising platform designed specifically for pets, helping pet owners raise funds for their furry friends' medical needs and other expenses.",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
 	children,
 }: Readonly<{
 	children: React.ReactNode;
 }>) {
+	const headersObj = await headers();
+	const cookies = headersObj.get("cookie");
+
 	return (
 		<html lang="en" className="text-[15px] sm:text-base">
 			<body className={`${bagelFatOne.variable} ${spaceGrotesk.variable} font-sans antialiased`}>
-				<HeaderNav />
-				{children}
-				<DevelopmentAlert />
-				<div className="isolate" />
+				<ContextProvider cookies={cookies}>
+					<HeaderNav />
+					{children}
+					<DevelopmentAlert />
+					<div className="isolate" />
+				</ContextProvider>
 			</body>
 		</html>
 	);
