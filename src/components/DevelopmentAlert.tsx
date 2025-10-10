@@ -5,7 +5,7 @@ import {
 	AlertDialogHeader,
 	AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-const isDevelopment = process.env.NEXT_PUBLIC_ENVIRONMENT != "production";
+const isProduction = process.env.NEXT_PUBLIC_ENVIRONMENT == "production";
 
 export default function DevelopmentAlert() {
 	return <Dialog />;
@@ -13,7 +13,7 @@ export default function DevelopmentAlert() {
 
 function Dialog() {
 	return (
-		<AlertDialog open={isDevelopment}>
+		<AlertDialog open={isProduction}>
 			<AlertDialogContent className="max-w-md">
 				<AlertDialogHeader>
 					<AlertDialogTitle className="text-center text-2xl font-bold">
