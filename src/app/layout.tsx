@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Bagel_Fat_One, Space_Grotesk } from "next/font/google";
 import "./globals.css";
+import HeaderNav from "@/components/HeaderNav";
+import DevelopmentAlert from "@/components/DevelopmentAlert";
 
 const bagelFatOne = Bagel_Fat_One({
 	variable: "--font-bagel-fat-one",
@@ -26,8 +28,10 @@ export default function RootLayout({
 }>) {
 	return (
 		<html lang="en" className="text-[15px] sm:text-base">
-			<body className={`${bagelFatOne.variable} ${spaceGrotesk.variable} antialiased`}>
+			<body className={`${bagelFatOne.variable} ${spaceGrotesk.variable} font-sans antialiased`}>
+				<HeaderNav />
 				{children}
+				<DevelopmentAlert />
 				<div className="isolate" />
 			</body>
 		</html>
