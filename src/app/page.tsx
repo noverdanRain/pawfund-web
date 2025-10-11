@@ -1,3 +1,10 @@
+import HeroSection from "@/features/home/components/HeroSection";
+
 export default function Home() {
-	return <div className="min-h-screen p-8 pb-20 font-sans sm:p-20"></div>;
+	return (
+		<main>
+			<HeroSection />
+			<div className="h-96 w-full" />
+		</main>
+	);
 }

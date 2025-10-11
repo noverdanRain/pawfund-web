@@ -1,0 +1,31 @@
+import { cookieStorage, createStorage } from "@wagmi/core";
+import { WagmiAdapter } from "@reown/appkit-adapter-wagmi";
+import { sepolia } from "@reown/appkit/networks";
+import { REOWN_PROJECT_ID } from "./envVars";
+
+// Get projectId from https://dashboard.reown.com
+export const projectId = REOWN_PROJECT_ID;
+
+if (!projectId) {
+	throw new Error("Reown project ID is not defined");
+}
+
+//Set up the Wagmi Adapter (Config)
+export const wagmiAdapter = new WagmiAdapter({
+	storage: createStorage({
+		storage: cookieStorage,
+	}),
+	ssr: true,
+	projectId,
+	networks: [sepolia],
+});
+
+export const reownConfig = wagmiAdapter.wagmiConfig;
+
+// Set up metadata
+export const reownMetadata = {
+	name: "Pawfund",
+	description: "A decentralized crowdfunding platform for animal welfare",
+	url: "https://pawfunding.vercel.app",
+	icons: ["https://pawfunding.vercel.app/logo-icon.svg"],
+};
