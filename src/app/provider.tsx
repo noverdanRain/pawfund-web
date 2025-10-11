@@ -1,6 +1,6 @@
 "use client";
 
-import { reownConfig, projectId, reownMetadata, wagmiAdapter } from "@/lib/reownConfig";
+import { reownConfig, projectId, reownMetadata, wagmiAdapter } from "@/config/reownConfig";
 import { createAppKit } from "@reown/appkit/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import React, { type ReactNode } from "react";

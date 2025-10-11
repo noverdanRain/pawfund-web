@@ -16,8 +16,6 @@ export default function BtnWalletConnect() {
 		address: address,
 		chainId: sepolia.id,
 	});
-	console.log({ balance });
-	console.log({ address });
 	return (
 		<>
 			{isConnected ? (
