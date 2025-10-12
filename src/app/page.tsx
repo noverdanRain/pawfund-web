@@ -1,3 +1,4 @@
+import Footer from "@/components/Footer";
 import HeroSection from "@/features/home/components/HeroSection";
 
 export default function Home() {
@@ -5,6 +6,7 @@ export default function Home() {
 		<main>
 			<HeroSection />
 			<div className="h-96 w-full" />
+			<Footer />
 		</main>
 	);
 }

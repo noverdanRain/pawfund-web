@@ -13,7 +13,7 @@ import PawCircPersp2 from "../assets/paw-circular-perspective-2.png";
 const HeroSection = () => {
 	return (
 		<>
-			<section className="relative mx-auto mt-4 flex h-[calc(100svh-4rem)] min-h-[600px] w-[calc(100%-1.5rem)] max-w-6xl flex-col items-center justify-between gap-4 overflow-clip rounded-[40px] bg-gray-100 px-8 py-20">
+			<section className="relative mx-auto mt-4 flex h-[calc(100svh-4rem)] max-h-[760px] min-h-[600px] w-[calc(100%-1.5rem)] max-w-6xl flex-col items-center justify-between gap-4 overflow-clip rounded-[40px] bg-gray-100 px-8 py-20 sm:max-h-[672px]">
 				<FlowerShape className="absolute bottom-40 -left-20 sm:bottom-4" />
 				<FlowerShape className="absolute -right-20 bottom-96 scale-x-[-1] sm:bottom-4" />
 
