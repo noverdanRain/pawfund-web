@@ -5,6 +5,7 @@ import HeaderNav from "@/components/HeaderNav";
 import DevelopmentAlert from "@/components/DevelopmentAlert";
 import ContextProvider from "./provider";
 import { headers } from "next/headers";
+import Footer from "@/components/Footer";
 
 const bagelFatOne = Bagel_Fat_One({
 	variable: "--font-bagel-fat-one",
@@ -82,6 +83,7 @@ export default async function RootLayout({
 				<ContextProvider cookies={cookies}>
 					<HeaderNav />
 					{children}
+					<Footer />
 					<DevelopmentAlert />
 					<div className="isolate" />
 				</ContextProvider>

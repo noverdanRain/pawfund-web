@@ -1,5 +1,3 @@
-"use client";
-
 import { PawCircular } from "@/assets/icons/PawCircular";
 import { cn } from "@/lib/utils";
 import HalfCirc from "./half-circ.svg";
@@ -40,7 +38,7 @@ const Footer = () => {
 						</p>
 					</div>
 					<div className="flex flex-col gap-3 sm:items-end">
-						<div className="flex items-center gap-4">
+						<nav className="flex items-center gap-4">
 							<Link
 								href={"#contract"}
 								className="flex items-center gap-1 font-bold text-white hover:underline"
@@ -49,13 +47,14 @@ const Footer = () => {
 								<ArrowTopRightShape className="size-3" />
 							</Link>
 							<Link
-								href={"#github"}
+								href={"https://github.com/noverdanRain/pawfund-web"}
+								target="_blank"
 								className="flex items-center gap-1 font-bold text-white hover:underline"
 							>
 								GITHUB
 								<ArrowTopRightShape className="size-3" />
 							</Link>
-						</div>
+						</nav>
 						<Link href={"#privacy"} className="text-sm font-medium text-white underline">
 							Privacy Policy
 						</Link>
