@@ -14,7 +14,7 @@ import { Button } from "@/components/ui/button";
 const IntermezzoSection = () => {
 	return (
 		<section className="flex flex-col items-center">
-			<PawCircular className="mt-14" />
+			<PawCircular className="mt-14 size-16" />
 			<h3 className="font-display mt-3 text-4xl">Did You Know?</h3>
 			<p className="mt-5 max-w-5xl text-center text-lg">{`Every year, millions of stray animals struggle to survive on the streets. Lack of food, disease, and abandonment make their lives incredibly difficult. Here's why your donation can make a life-changing difference.`}</p>
 
