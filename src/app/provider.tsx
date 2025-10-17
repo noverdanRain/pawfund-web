@@ -2,16 +2,14 @@
 
 import { reownConfig, projectId, reownMetadata, wagmiAdapter } from "@/config/reownConfig";
 import { createAppKit } from "@reown/appkit/react";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import React, { type ReactNode } from "react";
 import { cookieToInitialState, WagmiProvider } from "wagmi";
 import { sepolia } from "@reown/appkit/networks";
+import TRPCProvider from "./_trpc/provider";
 
 if (!projectId) {
 	throw new Error("Project ID is not defined");
 }
-
-const queryClient = new QueryClient();
 
 createAppKit({
 	adapters: [wagmiAdapter],
@@ -36,7 +34,7 @@ function ContextProvider({ children, cookies }: { children: ReactNode; cookies: 
 
 	return (
 		<WagmiProvider config={reownConfig} initialState={initialState}>
-			<QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+			<TRPCProvider>{children}</TRPCProvider>
 		</WagmiProvider>
 	);
 }
