@@ -8,6 +8,9 @@ const handler = (req: NextRequest) => {
 		req,
 		router: appRouter,
 		createContext: () => ({ req }),
+		onError({}) {
+			// Handle error
+		},
 	});
 };
 

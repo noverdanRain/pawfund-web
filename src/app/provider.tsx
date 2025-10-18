@@ -7,6 +7,7 @@ import { cookieToInitialState, WagmiProvider } from "wagmi";
 import { sepolia } from "@reown/appkit/networks";
 import TRPCProvider from "./_trpc/provider";
 import { Provider as JotaiProvider } from "jotai";
+import { CloudAuthSIWX } from "@reown/appkit-siwx";
 
 if (!projectId) {
 	throw new Error("Project ID is not defined");
@@ -28,6 +29,11 @@ createAppKit({
 		onramp: false,
 		swaps: false,
 	},
+	enableCoinbase: false,
+	siwx: new CloudAuthSIWX({
+		localAuthStorageKey: "pawfund-siwx-session",
+		localNonceStorageKey: "pawfund-siwx-nonce",
+	}),
 });
 
 function ContextProvider({ children, cookies }: { children: ReactNode; cookies: string | null }) {

@@ -6,6 +6,7 @@ import DevelopmentAlert from "@/components/DevelopmentAlert";
 import ContextProvider from "./provider";
 import { headers } from "next/headers";
 import Footer from "@/components/Footer";
+import { Toaster } from "@/components/ui/sonner";
 
 const bagelFatOne = Bagel_Fat_One({
 	variable: "--font-bagel-fat-one",
@@ -86,6 +87,7 @@ export default async function RootLayout({
 					<Footer />
 					<DevelopmentAlert />
 					<div className="isolate" />
+					<Toaster />
 				</ContextProvider>
 			</body>
 		</html>

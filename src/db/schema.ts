@@ -1,17 +1,17 @@
 import { mysqlTable, serial, text, varchar, timestamp, bigint } from "drizzle-orm/mysql-core";
 
-export const users = mysqlTable("users", {
+export const usersTable = mysqlTable("users", {
 	id: serial("id").primaryKey(),
 	address: varchar("address", { length: 255 }).notNull().unique(),
 	createdAt: timestamp("created_at").defaultNow().notNull(),
 	updatedAt: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
 });
 
-export const fundraisers = mysqlTable("fundraisers", {
+export const fundraisersTable = mysqlTable("fundraisers", {
 	id: serial("id").primaryKey(),
 	usersId: bigint("users_id", { mode: "number", unsigned: true })
 		.notNull()
-		.references(() => users.id, { onDelete: "cascade", onUpdate: "cascade" }),
+		.references(() => usersTable.id, { onDelete: "cascade", onUpdate: "cascade" }),
 	name: varchar("name", { length: 255 }).notNull(),
 	email: varchar("email", { length: 255 }).notNull(),
 	contactPerson: varchar("contact_person", { length: 255 }).notNull(),
@@ -21,4 +21,10 @@ export const fundraisers = mysqlTable("fundraisers", {
 	description: text("description").notNull(),
 	createdAt: timestamp("created_at").defaultNow().notNull(),
 	updatedAt: timestamp("updated_at").defaultNow().onUpdateNow().notNull(),
+});
+
+export const messageSignersTable = mysqlTable("message_signers", {
+	id: serial("id").primaryKey(),
+	address: varchar("address", { length: 255 }).notNull().unique(),
+	message: text("message").notNull(),
 });

@@ -10,7 +10,8 @@ import {
 import { Menu, User, LogOut, HelpCircle, Wallet, HandHeart, Plus } from "lucide-react";
 import { ReactNode } from "react";
 import { Button } from "./ui/button";
-import { useAppKit, useDisconnect } from "@reown/appkit/react";
+import { useAppKit } from "@reown/appkit/react";
+import { useLogout } from "@/hooks/useLogout";
 
 interface MainMenuDropdownProps {
 	children?: ReactNode;
@@ -18,7 +19,7 @@ interface MainMenuDropdownProps {
 
 export default function MainMenuDropdown({ children }: MainMenuDropdownProps) {
 	const { open: openWallet } = useAppKit();
-	const { disconnect: disconnectWallet } = useDisconnect();
+	const { disconnect: disconnectWallet } = useLogout();
 
 	return (
 		<DropdownMenu>

@@ -2,17 +2,61 @@
 
 import { ChevronDown } from "lucide-react";
 import { Button } from "../ui/button";
-import { useAppKit } from "@reown/appkit/react";
+import { useAppKit, useAppKitEvents } from "@reown/appkit/react";
 import { formatAddress, formatBalance } from "@/lib/utils";
-import { useAccount, useBalance } from "wagmi";
+import { useAccount, useBalance, useDisconnect } from "wagmi";
 import { sepolia } from "viem/chains";
 import { Skeleton } from "../ui/skeleton";
 import MainMenuDropdown from "../MainMenuDropdown";
+import { trpc } from "@/app/_trpc/client";
+import { useEffect } from "react";
+import { toast } from "sonner";
+import { authTokenAtom } from "@/atom";
+import { useSetAtom } from "jotai";
 
 export default function BtnWalletConnect() {
+	const setAuthToken = useSetAtom(authTokenAtom);
+	const { disconnect } = useDisconnect();
 	const { open } = useAppKit();
 	const { isConnected, address } = useAccount();
-	const { data: balance, isLoading } = useBalance({
+	const { data: appkitEvents } = useAppKitEvents();
+	console.log("App Kit EVENTS: ", appkitEvents.event);
+	const isSIWXAuthSuccess =
+		appkitEvents.event === "SIWX_AUTH_SUCCESS" ||
+		appkitEvents.event === "SOCIAL_LOGIN_SUCCESS" ||
+		appkitEvents.event === "EMAIL_VERIFICATION_CODE_PASS";
+
+	const { mutate: signIn } = trpc.authRouter.signIn.useMutation({
+		onMutate: () => {
+			toast.loading("Just a moment", {
+				description: `Verifying your wallet address `,
+				id: "sign-in-toast",
+			});
+		},
+		onSuccess: (data) => {
+			toast.success("Welcome back!", {
+				duration: 1000,
+				description: `You have successfully signed in.`,
+				id: "sign-in-toast",
+			});
+			setAuthToken(data.token);
+		},
+		onError: () => {
+			toast.error("Sign In Failed", {
+				description: "Sorry we could not sign you in. Please try again.",
+				id: "sign-in-toast",
+			});
+			disconnect();
+		},
+	});
+
+	useEffect(() => {
+		if (isSIWXAuthSuccess && address) {
+			signIn({ address: address });
+		}
+	}, [address, isSIWXAuthSuccess, signIn]);
+
+	const { data: balance, ...balanceRest } = useBalance({
 		address: address,
 		chainId: sepolia.id,
 	});
@@ -41,7 +85,7 @@ export default function BtnWalletConnect() {
 									</g>
 								</g>
 							</svg>
-							{isLoading ? (
+							{balanceRest.isLoading ? (
 								<Skeleton className="h-3 w-16 rounded-full bg-gray-300" />
 							) : (
 								<p>{formatBalance(balance)}</p>

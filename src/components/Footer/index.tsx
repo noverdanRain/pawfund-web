@@ -7,7 +7,6 @@ import Link from "next/link";
 import { ArrowTopRightShape } from "@/assets/icons/ArrowTopRightShape";
 
 const Footer = () => {
-	console.log(`bg-[url(${HalfCirc.src})]`);
 	return (
 		<>
 			<div
