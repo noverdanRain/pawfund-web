@@ -1,4 +1,4 @@
-import { cookieStorage, createStorage } from "@wagmi/core";
+import { cookieStorage, createStorage } from "wagmi";
 import { WagmiAdapter } from "@reown/appkit-adapter-wagmi";
 import { sepolia } from "@reown/appkit/networks";
 import { REOWN_PROJECT_ID } from "./envVars";
