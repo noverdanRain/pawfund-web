@@ -1,5 +1,4 @@
 import { PawCircular } from "@/assets/icons/PawCircular";
-import { formatAddress } from "@/lib/utils";
 import Image from "next/image";
 
 type FundraiserProps = {
@@ -24,7 +23,7 @@ export default function Fundraiser(props: FundraiserProps) {
 			)}
 			<div>
 				<p className="font-medium">{props.name}</p>
-				<p className="text-sm text-gray-500">{formatAddress(props.address, 6)}</p>
+				<p className="text-sm text-gray-500">{props.address}</p>
 			</div>
 		</div>
 	);

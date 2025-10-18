@@ -53,7 +53,7 @@ export default function CampaignDetails(props: { campaignId: string }) {
 					<Fundraiser
 						imageUrl="/placeholder-logo.svg"
 						name="John Doe Inc."
-						address="0xA7Dd557C3628e35D4CC9618F13Aa94D57FDb7E7C"
+						address={formatAddress("0xA7Dd557C3628e35D4CC9618F13Aa94D57FDb7E7C", 6)}
 					/>
 					<CampaignStory />
 					<Separator className="my-4" />
