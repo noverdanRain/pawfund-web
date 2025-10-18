@@ -6,6 +6,7 @@ import React, { type ReactNode } from "react";
 import { cookieToInitialState, WagmiProvider } from "wagmi";
 import { sepolia } from "@reown/appkit/networks";
 import TRPCProvider from "./_trpc/provider";
+import { Provider as JotaiProvider } from "jotai";
 
 if (!projectId) {
 	throw new Error("Project ID is not defined");
@@ -34,7 +35,9 @@ function ContextProvider({ children, cookies }: { children: ReactNode; cookies: 
 
 	return (
 		<WagmiProvider config={reownConfig} initialState={initialState}>
-			<TRPCProvider>{children}</TRPCProvider>
+			<JotaiProvider>
+				<TRPCProvider>{children}</TRPCProvider>
+			</JotaiProvider>
 		</WagmiProvider>
 	);
 }

@@ -2,22 +2,41 @@
 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { httpBatchLink } from "@trpc/client";
-import React, { useState } from "react";
+import React, { useMemo } from "react";
 
-import { trpc } from "./client";
+import { makeQueryClient, trpc } from "./client";
+import { useAtomValue } from "jotai";
+import { authTokenAtom } from "@/atom";
+import { BASE_URL } from "@/config/envVars";
 
-const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
+let clientQueryClientSingleton: QueryClient;
+function getQueryClient() {
+	if (typeof window === "undefined") {
+		// Server: always make a new query client
+		return makeQueryClient();
+	}
+	// Browser: use singleton pattern to keep the same query client
+	return (clientQueryClientSingleton ??= makeQueryClient());
+}
 
 export default function TRPCProvider(props: { children: React.ReactNode }) {
-	const [queryClient] = useState(() => new QueryClient());
-	const [trpcClient] = useState(() =>
-		trpc.createClient({
-			links: [
-				httpBatchLink({
-					url: `${BASE_URL}/api/trpc`,
-				}),
-			],
-		}),
+	const token = useAtomValue(authTokenAtom);
+	const queryClient = getQueryClient();
+	const trpcClient = useMemo(
+		() =>
+			trpc.createClient({
+				links: [
+					httpBatchLink({
+						url: `${BASE_URL}/api/trpc`,
+						headers() {
+							return {
+								Authorization: token ? `Bearer ${token}` : undefined,
+							};
+						},
+					}),
+				],
+			}),
+		[token],
 	);
 
 	return (
