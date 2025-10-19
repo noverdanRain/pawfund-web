@@ -4,10 +4,10 @@ import { reownConfig, projectId, reownMetadata, wagmiAdapter } from "@/config/re
 import { createAppKit } from "@reown/appkit/react";
 import React, { type ReactNode } from "react";
 import { cookieToInitialState, WagmiProvider } from "wagmi";
-import { sepolia } from "@reown/appkit/networks";
 import TRPCProvider from "./_trpc/provider";
 import { Provider as JotaiProvider } from "jotai";
 import { CloudAuthSIWX } from "@reown/appkit-siwx";
+import { sepolia } from "viem/chains";
 
 if (!projectId) {
 	throw new Error("Project ID is not defined");

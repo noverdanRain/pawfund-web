@@ -9,22 +9,26 @@ import { sepolia } from "viem/chains";
 import { Skeleton } from "../ui/skeleton";
 import MainMenuDropdown from "../MainMenuDropdown";
 import { trpc } from "@/app/_trpc/client";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { toast } from "sonner";
-import { authTokenAtom } from "@/atom";
+import { authedUserAtom, authTokenAtom } from "@/atom";
 import { useSetAtom } from "jotai";
 
 export default function BtnWalletConnect() {
 	const setAuthToken = useSetAtom(authTokenAtom);
+	const setAuthedUser = useSetAtom(authedUserAtom);
+	const getAuth = trpc.authRouter.verifyAuth.useQuery();
 	const { disconnect } = useDisconnect();
 	const { open } = useAppKit();
 	const { isConnected, address } = useAccount();
 	const { data: appkitEvents } = useAppKitEvents();
-	console.log("App Kit EVENTS: ", appkitEvents.event);
-	const isSIWXAuthSuccess =
-		appkitEvents.event === "SIWX_AUTH_SUCCESS" ||
-		appkitEvents.event === "SOCIAL_LOGIN_SUCCESS" ||
-		appkitEvents.event === "EMAIL_VERIFICATION_CODE_PASS";
+	const isSIWXAuthSuccess = useMemo(() => {
+		return (
+			appkitEvents?.event === "SIWX_AUTH_SUCCESS" ||
+			appkitEvents?.event === "SOCIAL_LOGIN_SUCCESS" ||
+			appkitEvents?.event === "EMAIL_VERIFICATION_CODE_PASS"
+		);
+	}, [appkitEvents?.event]);
 
 	const { mutate: signIn } = trpc.authRouter.signIn.useMutation({
 		onMutate: () => {
@@ -40,6 +44,7 @@ export default function BtnWalletConnect() {
 				id: "sign-in-toast",
 			});
 			setAuthToken(data.token);
+			setAuthedUser(data.payload);
 		},
 		onError: () => {
 			toast.error("Sign In Failed", {
@@ -55,6 +60,12 @@ export default function BtnWalletConnect() {
 			signIn({ address: address });
 		}
 	}, [address, isSIWXAuthSuccess, signIn]);
+
+	useEffect(() => {
+		if (getAuth.data) {
+			setAuthedUser(getAuth.data);
+		}
+	}, [getAuth.data, setAuthedUser]);
 
 	const { data: balance, ...balanceRest } = useBalance({
 		address: address,

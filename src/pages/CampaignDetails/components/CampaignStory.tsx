@@ -1,33 +1,54 @@
+"use client";
+
+import { cn } from "@/lib/utils";
+import Markdown from "react-markdown";
+
+const campaignMarkdown = `
+# Provide Comfort for Cats/Animals on the Road
+
+Every day, countless stray cats and animals wander the streets searching for food, shelter, and care. Many of them suffer from hunger, injuries, or untreated illnesses — silently struggling to survive.
+
+## Our Mission
+
+This campaign aims to **provide comfort and care for stray animals** by offering:
+
+- **Nutritious meals** for hungry cats and dogs  
+- **Medical treatment** for the sick and injured  
+- **Shelter and warmth** for those without a home  
+- **Spaying and neutering programs** to prevent overpopulation  
+
+Through your support, we can make their days safer, their nights warmer, and their lives filled with hope.
+
+## How You Can Help
+
+- 🐾 **Donate:** Every small contribution helps provide food and medical aid.  
+- ❤️ **Share:** Spread this campaign to raise awareness and compassion.  
+- 🏡 **Volunteer:** Join us in feeding and rescuing street animals.
+
+Together, we can bring kindness to those who need it the most — one meal, one rescue, and one warm heart at a time.
+
+> “The greatness of a nation and its moral progress can be judged by the way its animals are treated.”  
+> — *Mahatma Gandhi*
+`;
+
 export default function CampaignStory() {
 	return (
 		<>
-			<p className="mt-4 font-semibold">Campaign Story</p>
-			<p>
-				Stray cats are everywhere—in alleys, markets, housing complexes, and even schoolyards. What
-				may seem like a few cats today can turn into hundreds within just a couple of years. One
-				unspayed female cat, together with her offspring, can produce up to 60,000 kittens in just
-				six years (Humane Society, 2023). This uncontrolled reproduction results in an endless cycle
-				of suffering: malnutrition, untreated illness, abuse, and early death. In many urban and
-				rural areas, shelters are overwhelmed and resources are limited. Stray cats live short,
-				harsh lives. Kittens are often born in unsafe places, fall sick quickly, and most die before
-				reaching adulthood. According to the ASPCA, more than 80% of kittens born outdoors never
-				make it past their first year without human intervention. The most humane, effective, and
-				long-term solution to this crisis is spaying and neutering. Sterilization not only prevents
-				overpopulation, but also reduces aggressive behavior, disease transmission, and the stress
-				of mating cycles among stray colonies. 🌍 Our Mission with Paw Fund Through this campaign,
-				Paw Fund aims to spay and neuter at least 200 stray cats over the next 3 months, focusing on
-				areas where the stray population is rapidly increasing. Each procedure includes pre-surgery
-				checkups, sterilization by licensed veterinarians, and post-operative recovery support. We
-				work directly with local animal rescue groups and veterinary clinics to ensure every cat is
-				handled with care and compassion. 💰 Where Your Donation Goes Each sterilization procedure
-				costs approximately $30, covering: Veterinary service fees Anesthesia and surgery materials
-				Transportation and recovery care Antibiotics and post-op treatment Follow-up health check
-				That means a donation of $60 can help two cats and prevent hundreds of unwanted births in
-				the future. Even $10 can cover the cost of medication and care for one cat during recovery.
-				📈 Why This Works In cities that have implemented consistent sterilization programs, stray
-				cat populations have decreased by up to 70% in 5 years (Best Friends Animal Society).
-				Instead of short-term fixes, we aim to break the cycle with a proven, scalable solution.
-			</p>
+			<p className="mt-4 mb-4 text-lg font-bold">Campaign Story</p>
+			<div
+				className={cn(
+					"prose max-w-none",
+					"prose-headings:my-1 prose-headings:text-base prose-headings:font-semibold",
+					"prose-p:my-1",
+					"prose-ul:my-1 prose-ol:my-1",
+					"prose-blockquote:my-2",
+					"prose-hr:my-3.5",
+					"prose-img:my-2 prose-img:rounded-xl",
+					"prose-strong:font-semibold",
+				)}
+			>
+				<Markdown>{campaignMarkdown}</Markdown>
+			</div>
 		</>
 	);
 }

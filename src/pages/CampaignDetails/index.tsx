@@ -55,6 +55,7 @@ export default function CampaignDetails(props: { campaignId: string }) {
 						name="John Doe Inc."
 						address={formatAddress("0xA7Dd557C3628e35D4CC9618F13Aa94D57FDb7E7C", 6)}
 					/>
+					<Separator className="my-4" />
 					<CampaignStory />
 					<Separator className="my-4" />
 					<Donors />

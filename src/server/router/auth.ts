@@ -1,10 +1,10 @@
-import { publicProcecdure, router } from "../trpc";
+import { privateProcedure, publicProcecdure, router } from "../trpc";
 import db from "@/db";
 import { fundraisersTable, messageSignersTable, usersTable } from "@/db/schema";
 import { TRPCError } from "@trpc/server";
 import { eq } from "drizzle-orm";
 import { z } from "zod";
-import { Payload, signJwt } from "@/lib/jwt";
+import { Payload, signJwt, verifyJwt } from "@/lib/jwt";
 
 export const authRouter = router({
 	createSignMessage: publicProcecdure
@@ -95,5 +95,19 @@ export const authRouter = router({
 				message: `Failed to sign in`,
 			});
 		}
+	}),
+	verifyToken: publicProcecdure
+		.input(
+			z.object({
+				token: z.string(),
+			}),
+		)
+		.query(async ({ input }) => {
+			const payload = await verifyJwt(input.token);
+			return payload;
+		}),
+	verifyAuth: privateProcedure.query(async ({ ctx }) => {
+		const { payload } = ctx;
+		return payload;
 	}),
 });

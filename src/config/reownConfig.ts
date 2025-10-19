@@ -1,9 +1,9 @@
+import { sepolia } from "viem/chains";
+import { REOWN_PROJECT_ID } from "./envVars";
 import { cookieStorage, createStorage } from "wagmi";
 import { WagmiAdapter } from "@reown/appkit-adapter-wagmi";
-import { sepolia } from "@reown/appkit/networks";
-import { REOWN_PROJECT_ID } from "./envVars";
+import type { Storage } from "wagmi";
 
-// Get projectId from https://dashboard.reown.com
 export const projectId = REOWN_PROJECT_ID;
 
 if (!projectId) {
@@ -14,7 +14,7 @@ if (!projectId) {
 export const wagmiAdapter = new WagmiAdapter({
 	storage: createStorage({
 		storage: cookieStorage,
-	}),
+	}) as Storage,
 	ssr: true,
 	projectId,
 	networks: [sepolia],
