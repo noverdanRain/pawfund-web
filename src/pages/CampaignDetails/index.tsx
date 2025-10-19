@@ -31,7 +31,11 @@ export default function CampaignDetails(props: { campaignId: string }) {
 						<p className="hidden text-sm text-gray-500 sm:block">
 							0xf436a2443eb5Dc420C2405399f42914A0DbD8AAA
 						</p>
-						<Link href={"#lets-donate"} className="flex items-center gap-1">
+						<Link
+							target="_blank"
+							href={`https://eth-sepolia.blockscout.com/address/0x2771732DB7D76B749C4De8A8748AA46D9779F7fA`}
+							className="flex items-center gap-1"
+						>
 							<Telescope size={16} />
 							<p className="text-sm font-medium underline">View in Explorer</p>
 						</Link>
