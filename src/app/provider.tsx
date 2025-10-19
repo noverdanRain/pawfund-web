@@ -7,7 +7,7 @@ import { cookieToInitialState, WagmiProvider } from "wagmi";
 import TRPCProvider from "./_trpc/provider";
 import { Provider as JotaiProvider } from "jotai";
 import { CloudAuthSIWX } from "@reown/appkit-siwx";
-import { sepolia } from "viem/chains";
+import { sepolia } from "@reown/appkit/networks";
 
 if (!projectId) {
 	throw new Error("Project ID is not defined");
