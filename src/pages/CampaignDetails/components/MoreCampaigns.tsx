@@ -27,6 +27,7 @@ export default function MoreCampaigns() {
 						endDate="2024-12-31"
 						fundraiserImage="/placeholder-logo.svg"
 						key={idx}
+						address="0x0000000000000000000000000000000000000000"
 					/>
 				))}
 			</div>
