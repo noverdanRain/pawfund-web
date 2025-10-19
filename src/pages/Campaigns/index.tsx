@@ -16,7 +16,7 @@ type CampaignsPageProps = {
 	searchParams: SearchParams;
 	children?: React.ReactNode;
 };
-export function CampaignsPage(props: CampaignsPageProps) {
+export default function CampaignsPage(props: CampaignsPageProps) {
 	const { searchParams } = props;
 	const { filter, page, search, sort } = searchParams;
 	console.log({ filter, page, search, sort });
