@@ -3,7 +3,7 @@
 import { trpc } from "@/app/_trpc/client";
 import CampaignCard from "@/components/CampaignCard";
 
-export function CampaignList() {
+export default function CampaignList() {
 	const { data: campaigns } = trpc.campaignsRouter.getCampaigns.useQuery({});
 	console.log({ campaigns });
 

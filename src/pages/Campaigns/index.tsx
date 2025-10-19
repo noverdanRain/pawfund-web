@@ -1,9 +1,9 @@
 "use client";
 
-import { CampaignList } from "./components/CampaignList";
-import { CampaignPagination } from "./components/CampaignPagination";
-import { CampaignSort } from "./components/CampaignSort";
-import { SearchInput } from "./components/SearchInput";
+import CampaignList from "./components/CampaignList";
+import CampaignPagination from "./components/CampaignPagination";
+import CampaignSort from "./components/CampaignSort";
+import SearchInput from "./components/SearchInput";
 
 type SearchParams = {
 	search?: string | string[] | undefined;

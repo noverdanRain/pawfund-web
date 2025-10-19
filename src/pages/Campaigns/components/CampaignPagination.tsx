@@ -8,7 +8,7 @@ import {
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import Link from "next/link";
 
-export function CampaignPagination() {
+export default function CampaignPagination() {
 	return (
 		<Pagination>
 			<PaginationContent className="my-6 w-full">

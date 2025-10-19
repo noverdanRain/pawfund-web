@@ -7,7 +7,7 @@ import { cn } from "@/lib/utils";
 import { Search, X } from "lucide-react";
 import { ChangeEvent, useRef, useState } from "react";
 
-export function SearchInput() {
+export default function SearchInput() {
 	const [inputValue, setInputValue] = useState<string>("");
 	const [searchResult, setSearchResult] = useState<string>("asdasd");
 	const inputRef = useRef<HTMLInputElement>(null);

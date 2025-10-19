@@ -5,7 +5,7 @@ import { useState } from "react";
 
 type SortOption = "newest" | "oldest" | "closeToGoal" | "popular";
 
-export function CampaignSort() {
+export default function CampaignSort() {
 	const [sortSelected, setSortSelected] = useState<SortOption | null>();
 	return (
 		<div className="mt-2 flex w-full items-center gap-2">
