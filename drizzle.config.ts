@@ -1,6 +1,7 @@
+import { DATABASE_URL } from "@/config/envVars";
 import { defineConfig } from "drizzle-kit";
 
-const url = process.env.DATABASE_URL;
+const url = DATABASE_URL;
 
 if (!url) {
 	throw new Error("Database URI is undefined");
