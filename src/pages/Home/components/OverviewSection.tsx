@@ -28,6 +28,7 @@ export default function OverviewSection() {
 						endDate="2024-12-31"
 						fundraiserImage="/placeholder-logo.svg"
 						key={idx}
+						address="0x000"
 					/>
 				))}
 			</div>

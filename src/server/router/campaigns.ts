@@ -1,4 +1,4 @@
-import { publicProcecdure, router } from "../trpc";
+import { publicProcedure, router } from "../trpc";
 import db from "@/db";
 import { campaignsTable, fundraisersTable } from "@/db/schema";
 import { TRPCError } from "@trpc/server";
@@ -13,7 +13,7 @@ const getCampaignsScheme = z.object({
 });
 
 export const campaignsRouter = router({
-	getCampaigns: publicProcecdure.input(getCampaignsScheme).query(async ({ input }) => {
+	getCampaigns: publicProcedure.input(getCampaignsScheme).query(async ({ input }) => {
 		const {} = input;
 		const { searchQuery, sort, limit, offset } = input;
 		try {

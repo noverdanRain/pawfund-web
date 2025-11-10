@@ -1,4 +1,4 @@
-import { privateProcedure, publicProcecdure, router } from "../trpc";
+import { privateProcedure, publicProcedure, router } from "../trpc";
 import db from "@/db";
 import { fundraisersTable, messageSignersTable, usersTable } from "@/db/schema";
 import { TRPCError } from "@trpc/server";
@@ -7,7 +7,7 @@ import { z } from "zod";
 import { Payload, signJwt, verifyJwt } from "@/lib/jwt";
 
 export const authRouter = router({
-	createSignMessage: publicProcecdure
+	createSignMessage: publicProcedure
 		.input(
 			z.object({
 				address: z.string(),
@@ -51,7 +51,7 @@ export const authRouter = router({
 				});
 			}
 		}),
-	signIn: publicProcecdure.input(z.object({ address: z.string() })).mutation(async ({ input }) => {
+	signIn: publicProcedure.input(z.object({ address: z.string() })).mutation(async ({ input }) => {
 		// This is needs to be updated to ensure the security
 		const { address } = input;
 		try {
@@ -96,7 +96,7 @@ export const authRouter = router({
 			});
 		}
 	}),
-	verifyToken: publicProcecdure
+	verifyToken: publicProcedure
 		.input(
 			z.object({
 				token: z.string(),

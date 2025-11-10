@@ -9,7 +9,7 @@ export const createTRPCContext = (opts: { req: NextRequest }) => {
 	};
 };
 
-export const t = initTRPC.context<ReturnType<typeof createTRPCContext>>().create();
+const t = initTRPC.context<ReturnType<typeof createTRPCContext>>().create();
 
 const isAuthed = t.middleware(async ({ ctx, next }) => {
 	const { req } = ctx;
@@ -37,6 +37,6 @@ const isAuthed = t.middleware(async ({ ctx, next }) => {
 });
 
 export const privateProcedure = t.procedure.use(isAuthed);
-export const publicProcecdure = t.procedure;
+export const publicProcedure = t.procedure;
 export const router = t.router;
-export const createCallerFactory = t.createCallerFactory;
+export const callerFactory = t.createCallerFactory;

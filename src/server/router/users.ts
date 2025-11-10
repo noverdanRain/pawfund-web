@@ -1,4 +1,4 @@
-import { publicProcecdure, router } from "../trpc";
+import { publicProcedure, router } from "../trpc";
 import db from "@/db";
 import { usersTable } from "@/db/schema";
 import { TRPCError } from "@trpc/server";
@@ -6,7 +6,7 @@ import { eq } from "drizzle-orm";
 import { z } from "zod";
 
 export const userRouter = router({
-	getUser: publicProcecdure.input(z.object({ address: z.string() })).query(async ({ input }) => {
+	getUser: publicProcedure.input(z.object({ address: z.string() })).query(async ({ input }) => {
 		const { address } = input;
 		try {
 			const [user] = await db
