@@ -18,8 +18,8 @@ type CampaignsPageProps = {
 };
 export default function CampaignsPage(props: CampaignsPageProps) {
 	const { searchParams } = props;
-	const { filter, page, search, sort } = searchParams;
-	console.log({ filter, page, search, sort });
+	// const { filter, page, search, sort } = searchParams;
+	// console.log({ filter, page, search, sort });
 	return (
 		<main className="mx-auto mt-40 min-h-[calc(100dvh-7rem)] w-[calc(100%-1.5rem)] max-w-6xl">
 			<div className="flex flex-col items-center gap-2">

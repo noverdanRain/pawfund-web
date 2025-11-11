@@ -1,4 +1,5 @@
 // import { use } from "react";
+"use client";
 
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
@@ -11,6 +12,7 @@ import CampaignImage from "./components/CampaignImage";
 import MoreCampaigns from "./components/MoreCampaigns";
 import DonationField from "./components/DonationField";
 import { formatAddress } from "@/lib/utils";
+import FloatingDonationField from "./components/FloatingDonationField";
 
 export default function CampaignDetails(props: { campaignId: string }) {
 	const { campaignId } = props;
@@ -18,7 +20,7 @@ export default function CampaignDetails(props: { campaignId: string }) {
 	return (
 		<main className="mx-auto mt-28 min-h-[calc(100dvh-7rem)] w-[calc(100%-1.5rem)] max-w-6xl">
 			<h1 className="text-2xl font-semibold">Spay & Neuter Stray Cats to Prevent Overpopulation</h1>
-			<div className="flex flex-col gap-6 lg:flex-row">
+			<div className="relative flex flex-col gap-6 lg:flex-row">
 				<div className="mt-6 flex-2 space-y-2">
 					<p className="text-sm text-gray-500">Created at 10 April 2025</p>
 
@@ -45,14 +47,6 @@ export default function CampaignDetails(props: { campaignId: string }) {
 						the right way, Stimulate the kitten to go to the bathroom, and Clean the kitten. Your
 						support can empower these young minds, opening doors that poverty has closed.
 					</p>
-					<Button
-						asChild
-						className="mt-4 h-12 w-full shadow-none lg:hidden"
-						shape={"circle"}
-						size={"lg"}
-					>
-						<Link href={"#lets-donate"}>Donate Now</Link>
-					</Button>
 
 					<Fundraiser
 						imageUrl="/placeholder-logo.svg"
@@ -62,13 +56,15 @@ export default function CampaignDetails(props: { campaignId: string }) {
 					<Separator className="my-4" />
 					<CampaignStory />
 					<Separator className="my-4" />
+					<FloatingDonationField />
+					<Separator className="my-4" />
 					<Donors />
 					<Separator className="mt-4" />
 					<Button variant={"ghost"}>
 						<Flag /> Report This Campaign
 					</Button>
 				</div>
-				<div className="flex-[1.4]" id="lets-donate">
+				<div className="hidden flex-[1.4] lg:block">
 					<DonationField />
 				</div>
 			</div>

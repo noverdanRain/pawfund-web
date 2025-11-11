@@ -109,7 +109,7 @@ export default function DonationField(props: React.HTMLAttributes<HTMLDivElement
 	);
 }
 
-function ButtonSelectAmount(
+export function ButtonSelectAmount(
 	props: {
 		amount: string;
 		selected?: boolean;
@@ -119,6 +119,7 @@ function ButtonSelectAmount(
 	const { amount, selected, onSelected, ...restProps } = props;
 	return (
 		<Button
+			tabIndex={-1}
 			variant={"outline"}
 			shape={"circle"}
 			className={cn(
