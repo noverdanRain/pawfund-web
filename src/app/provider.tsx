@@ -1,13 +1,15 @@
 "use client";
 
-import { reownConfig, projectId, reownMetadata, wagmiAdapter } from "@/config/reownConfig";
-import { createAppKit } from "@reown/appkit/react";
-import React, { type ReactNode } from "react";
-import { cookieToInitialState, WagmiProvider } from "wagmi";
-import TRPCProvider from "./_trpc/provider";
-import { Provider as JotaiProvider } from "jotai";
+import { projectId, reownConfig, reownMetadata, wagmiAdapter } from "@/config/reownConfig";
 import { CloudAuthSIWX } from "@reown/appkit-siwx";
 import { sepolia } from "@reown/appkit/networks";
+import { createAppKit } from "@reown/appkit/react";
+import { useEffect, type ReactNode } from "react";
+import { cookieToInitialState, WagmiProvider } from "wagmi";
+import TRPCProvider from "./_trpc/provider";
+import { useSetAtom } from "jotai";
+import { authedUserAtom } from "@/atom/auth";
+import { trpc } from "./_trpc/client";
 
 if (!projectId) {
 	throw new Error("Project ID is not defined");
@@ -41,11 +43,23 @@ function ContextProvider({ children, cookies }: { children: ReactNode; cookies: 
 
 	return (
 		<WagmiProvider config={reownConfig} initialState={initialState}>
-			<JotaiProvider>
-				<TRPCProvider>{children}</TRPCProvider>
-			</JotaiProvider>
+			<TRPCProvider>
+				<UserProvider>{children}</UserProvider>
+			</TRPCProvider>
 		</WagmiProvider>
 	);
 }
 
 export default ContextProvider;
+
+function UserProvider({ children }: { children: ReactNode }) {
+	const setAuthedUser = useSetAtom(authedUserAtom);
+	const getAuth = trpc.authRouter.verifyAuth.useQuery();
+
+	useEffect(() => {
+		if (getAuth.data) {
+			setAuthedUser(getAuth.data);
+		}
+	}, [getAuth.data, setAuthedUser]);
+	return <>{children}</>;
+}

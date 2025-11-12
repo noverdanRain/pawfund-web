@@ -13,7 +13,7 @@ import { Button } from "./ui/button";
 import { useAppKit } from "@reown/appkit/react";
 import { useLogout } from "@/hooks/useLogout";
 import { useAtomValue } from "jotai";
-import { authedUserAtom } from "@/atom";
+import { authedUserAtom } from "@/atom/auth";
 import { Skeleton } from "./ui/skeleton";
 
 interface MainMenuDropdownProps {

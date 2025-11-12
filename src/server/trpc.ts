@@ -19,21 +19,19 @@ const isAuthed = t.middleware(async ({ ctx, next }) => {
 			code: "UNAUTHORIZED",
 			message: "You must be logged in to access this resource.",
 		});
-	let payload;
 	try {
-		const resPayload = await verifyJwt(token);
-		payload = resPayload;
+		const payload = await verifyJwt(token);
+		return next({
+			ctx: {
+				payload,
+			},
+		});
 	} catch (err) {
 		throw new TRPCError({
 			code: "UNAUTHORIZED",
 			message: `Token Error: ${err instanceof Error ? err.message : "Invalid token."}`,
 		});
 	}
-	return next({
-		ctx: {
-			payload,
-		},
-	});
 });
 
 export const privateProcedure = t.procedure.use(isAuthed);

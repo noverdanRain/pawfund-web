@@ -1,0 +1,40 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { QueryClient, type UseMutationOptions } from "@tanstack/react-query";
+import { TRPCClientErrorBase } from "@trpc/client";
+import { DefaultErrorShape } from "@trpc/server/unstable-core-do-not-import";
+import { toast } from "sonner";
+
+export const queryClient = new QueryClient({
+	defaultOptions: {
+		queries: {
+			// staleTime: 5 * 60 * 1000, // 5 minutes
+			// gcTime: 10 * 60 * 1000, // 10 minutes
+			retry: (failureCount) => {
+				return failureCount < 3;
+			},
+			refetchOnWindowFocus: false,
+			refetchOnReconnect: true,
+		},
+		mutations: {
+			onError: () => {
+				toast.error("Hmm... ada yang tidak beres. Silakan coba lagi.");
+			},
+		},
+	},
+});
+
+export type ApiFnReturnType<FnType extends (...args: any) => Promise<any>> = Awaited<
+	ReturnType<FnType>
+>;
+
+export type QueryConfig<T extends (...args: any[]) => any> = Omit<
+	ReturnType<T>,
+	"queryKey" | "queryFn"
+>;
+
+export type MutationConfig<MutationFnType extends (...args: any) => Promise<any>> =
+	UseMutationOptions<
+		ApiFnReturnType<MutationFnType>,
+		TRPCClientErrorBase<DefaultErrorShape>,
+		Parameters<MutationFnType>[0]
+	>;

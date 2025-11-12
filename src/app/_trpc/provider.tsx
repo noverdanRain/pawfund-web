@@ -6,7 +6,7 @@ import React, { useMemo } from "react";
 
 import { makeQueryClient, trpc } from "./client";
 import { useAtomValue } from "jotai";
-import { authTokenAtom } from "@/atom";
+import { authTokenAtom } from "@/atom/auth";
 import { BASE_URL } from "@/config/envVars";
 
 let clientQueryClientSingleton: QueryClient;
@@ -30,6 +30,7 @@ export default function TRPCProvider(props: { children: React.ReactNode }) {
 						url: `${BASE_URL}/api/trpc`,
 						headers() {
 							return {
+								Accept: "application/json",
 								Authorization: token ? `Bearer ${token}` : undefined,
 							};
 						},

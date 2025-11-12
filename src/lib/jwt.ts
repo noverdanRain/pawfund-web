@@ -2,13 +2,9 @@ import "server-only";
 
 import { JWT_SECRET } from "@/config/envVars";
 import { SignJWT, jwtVerify } from "jose";
+import { Payload } from "@/types";
 
 const secret = new TextEncoder().encode(JWT_SECRET);
-
-export type Payload = {
-	address: string;
-	type: "fundraiser" | "donor";
-};
 
 export async function signJwt(payload: Payload): Promise<string> {
 	return new SignJWT(payload)

@@ -4,7 +4,8 @@ import { fundraisersTable, messageSignersTable, usersTable } from "@/db/schema";
 import { TRPCError } from "@trpc/server";
 import { eq } from "drizzle-orm";
 import { z } from "zod";
-import { Payload, signJwt, verifyJwt } from "@/lib/jwt";
+import { signJwt, verifyJwt } from "@/lib/jwt";
+import { Payload } from "@/types";
 
 export const authRouter = router({
 	createSignMessage: publicProcedure
@@ -51,51 +52,59 @@ export const authRouter = router({
 				});
 			}
 		}),
-	signIn: publicProcedure.input(z.object({ address: z.string() })).mutation(async ({ input }) => {
-		// This is needs to be updated to ensure the security
-		const { address } = input;
-		try {
-			const [userExsist] = await db
-				.select({
-					address: usersTable.address,
-					fundraiserId: fundraisersTable.id,
-				})
-				.from(usersTable)
-				.leftJoin(fundraisersTable, eq(fundraisersTable.usersId, usersTable.id))
-				.where(eq(usersTable.address, address))
-				.limit(1);
-			if (userExsist) {
+	signIn: publicProcedure
+		.input(
+			z.object({
+				address: z.string().refine((addr) => /^0x[a-fA-F0-9]{40}$/.test(addr), {
+					message: "Invalid EVM address (expected 0x followed by 40 hex chars)",
+				}),
+			}),
+		)
+		.mutation(async ({ input }) => {
+			// This is needs to be updated to ensure the security
+			const { address } = input;
+			try {
+				const [userExsist] = await db
+					.select({
+						address: usersTable.address,
+						fundraiserId: fundraisersTable.id,
+					})
+					.from(usersTable)
+					.leftJoin(fundraisersTable, eq(fundraisersTable.usersId, usersTable.id))
+					.where(eq(usersTable.address, address))
+					.limit(1);
+				if (userExsist) {
+					const payload: Payload = {
+						address: userExsist.address,
+						type: userExsist.fundraiserId ? "fundraiser" : "donor",
+					};
+					const token = await signJwt(payload);
+					return {
+						token,
+						payload,
+					};
+				}
+				await db.insert(usersTable).values({
+					address,
+				});
 				const payload: Payload = {
-					address: userExsist.address,
-					type: userExsist.fundraiserId ? "fundraiser" : "donor",
+					address: address,
+					type: "donor",
 				};
 				const token = await signJwt(payload);
 				return {
 					token,
 					payload,
 				};
+			} catch (error) {
+				if (error instanceof TRPCError) throw error;
+				console.error("Failed to sign in:", error);
+				throw new TRPCError({
+					code: "INTERNAL_SERVER_ERROR",
+					message: `Failed to sign in`,
+				});
 			}
-			await db.insert(usersTable).values({
-				address,
-			});
-			const payload: Payload = {
-				address: address,
-				type: "donor",
-			};
-			const token = await signJwt(payload);
-			return {
-				token,
-				payload,
-			};
-		} catch (error) {
-			if (error instanceof TRPCError) throw error;
-			console.error("Failed to sign in:", error);
-			throw new TRPCError({
-				code: "INTERNAL_SERVER_ERROR",
-				message: `Failed to sign in`,
-			});
-		}
-	}),
+		}),
 	verifyToken: publicProcedure
 		.input(
 			z.object({
