@@ -1,6 +1,6 @@
 import { cn } from "@/lib/utils";
 
-export function Card(props: {
+export default function Card(props: {
 	children?: React.ReactNode;
 	title: string;
 	description: string;

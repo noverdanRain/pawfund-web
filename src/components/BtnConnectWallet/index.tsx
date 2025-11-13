@@ -1,9 +1,12 @@
 "use client";
 
+import { EthereumRoundedIcon } from "@/assets/icons/EthereumRoundedIcon";
+import { authedUserAtom } from "@/atom/auth";
 import { useAppKitEvents } from "@/hooks/useAppKitEvents";
 import { useSignIn } from "@/hooks/useSignIn";
 import { formatAddress, formatBalance } from "@/lib/utils";
 import { useAppKit } from "@reown/appkit/react";
+import { useAtom } from "jotai";
 import { ChevronDown } from "lucide-react";
 import { useEffect } from "react";
 import { sepolia } from "viem/chains";
@@ -11,13 +14,10 @@ import { useAccount, useBalance } from "wagmi";
 import MainMenuDropdown from "../MainMenuDropdown";
 import { Button } from "../ui/button";
 import { Skeleton } from "../ui/skeleton";
-import { EthereumRoundedIcon } from "@/assets/icons/EthereumRoundedIcon";
-import { useAtom, useAtomValue } from "jotai";
-import { authedUserAtom } from "@/atom/auth";
 
 export default function BtnWalletConnect() {
 	const { open } = useAppKit();
-	const { isConnected, address, status } = useAccount();
+	const { isConnected, address } = useAccount();
 	const { isSIWXSuccess } = useAppKitEvents();
 	const [authedUser, setAuthedUser] = useAtom(authedUserAtom);
 

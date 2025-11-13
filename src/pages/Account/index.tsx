@@ -7,8 +7,7 @@ import { Input } from "@/components/ui/input";
 import { formatAddress } from "@/lib/utils";
 import { ArrowLeft, Copy, User } from "lucide-react";
 import { useRouter } from "nextjs-toploader/app";
-import { toast } from "sonner";
-import { Card } from "./Card";
+import Card from "./Card";
 import { AccountLoading } from "./Loading";
 
 export default function AccountPage() {
