@@ -15,6 +15,7 @@ import { useLogout } from "@/hooks/useLogout";
 import { useAtomValue } from "jotai";
 import { authedUserAtom } from "@/atom/auth";
 import { Skeleton } from "./ui/skeleton";
+import { useRouter } from "next/navigation";
 
 interface MainMenuDropdownProps {
 	children?: ReactNode;
@@ -24,6 +25,7 @@ const MainMenuDropdown = memo(function MainMenuDropdown({ children }: MainMenuDr
 	const { open: openWallet } = useAppKit();
 	const { disconnect: disconnectWallet } = useLogout();
 	const authedUser = useAtomValue(authedUserAtom);
+	const router = useRouter();
 
 	return (
 		<DropdownMenu>
@@ -43,7 +45,7 @@ const MainMenuDropdown = memo(function MainMenuDropdown({ children }: MainMenuDr
 								<span>Create Campaign</span>
 							</Button>
 						)}
-						<DropdownMenuItem>
+						<DropdownMenuItem onClick={() => router.push("/account")}>
 							<User className="mr-2 h-4 w-4" />
 							<span>Account</span>
 						</DropdownMenuItem>

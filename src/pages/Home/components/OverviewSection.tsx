@@ -15,7 +15,7 @@ export default function OverviewSection() {
 			<h3 className="font-display mt-6 max-w-2xl text-center text-4xl">
 				Find a campaign, make an impact, and change lives today!
 			</h3>
-			<div className="mt-8 grid grid-cols-1 gap-0.5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+			<div className="mt-8 grid grid-cols-2 gap-0.5 md:grid-cols-3 lg:grid-cols-4">
 				{Array.from({ length: 8 }).map((_, idx) => (
 					<CampaignCard
 						image="/placeholder-img.png"

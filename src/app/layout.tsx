@@ -1,12 +1,9 @@
+import ComponentsProvider from "@/components/provider/ComponentsProvider";
+import ContextProvider from "@/components/provider/ContextProvider";
 import type { Metadata } from "next";
 import { Bagel_Fat_One, Space_Grotesk } from "next/font/google";
-import "./globals.css";
-import HeaderNav from "@/components/HeaderNav";
-import DevelopmentAlert from "@/components/DevelopmentAlert";
-import ContextProvider from "./provider";
 import { headers } from "next/headers";
-import Footer from "@/components/Footer";
-import { Toaster } from "@/components/ui/sonner";
+import "./globals.css";
 
 const bagelFatOne = Bagel_Fat_One({
 	variable: "--font-bagel-fat-one",
@@ -82,12 +79,7 @@ export default async function RootLayout({
 		<html lang="en" className="text-[15px] sm:text-base">
 			<body className={`${bagelFatOne.variable} ${spaceGrotesk.variable} font-sans antialiased`}>
 				<ContextProvider cookies={cookies}>
-					<HeaderNav />
-					{children}
-					<Footer />
-					<DevelopmentAlert />
-					<div className="isolate" />
-					<Toaster />
+					<ComponentsProvider>{children}</ComponentsProvider>
 				</ContextProvider>
 			</body>
 		</html>

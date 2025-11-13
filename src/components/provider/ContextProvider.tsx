@@ -8,8 +8,8 @@ import { createAppKit } from "@reown/appkit/react";
 import { useAtomValue, useSetAtom } from "jotai";
 import { useEffect, type ReactNode } from "react";
 import { cookieToInitialState, WagmiProvider } from "wagmi";
-import { trpc } from "./_trpc/client";
-import TRPCProvider from "./_trpc/provider";
+import { trpc } from "@/app/_trpc/client";
+import TRPCProvider from "@/app/_trpc/provider";
 
 if (!projectId) {
 	throw new Error("Project ID is not defined");

@@ -62,9 +62,6 @@ export default function CampaignCard(props: CampaignCardProps) {
 						alt="Fundraiser"
 						className="absolute bottom-1.5 left-1.5 size-8 rounded-full bg-gray-200 sm:bottom-0 sm:left-0 sm:size-11"
 					/>
-					<div className="absolute top-2 right-2 rounded-full bg-white/20 px-3 py-2 text-xs font-medium backdrop-blur-sm">
-						28 Days Left
-					</div>
 				</div>
 				<TooltipWrapper
 					delayDuration={600}
