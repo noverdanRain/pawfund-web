@@ -4,10 +4,8 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { httpBatchLink } from "@trpc/client";
 import React, { useMemo } from "react";
 
-import { makeQueryClient, trpc } from "./client";
-import { useAtomValue } from "jotai";
-import { authTokenAtom } from "@/atom/auth";
 import { BASE_URL } from "@/config/envVars";
+import { makeQueryClient, trpc } from "./client";
 
 let clientQueryClientSingleton: QueryClient;
 function getQueryClient() {
@@ -20,7 +18,6 @@ function getQueryClient() {
 }
 
 export default function TRPCProvider(props: { children: React.ReactNode }) {
-	const token = useAtomValue(authTokenAtom);
 	const queryClient = getQueryClient();
 	const trpcClient = useMemo(
 		() =>
@@ -28,16 +25,10 @@ export default function TRPCProvider(props: { children: React.ReactNode }) {
 				links: [
 					httpBatchLink({
 						url: `${BASE_URL}/api/trpc`,
-						headers() {
-							return {
-								Accept: "application/json",
-								Authorization: token ? `Bearer ${token}` : undefined,
-							};
-						},
 					}),
 				],
 			}),
-		[token],
+		[],
 	);
 
 	return (

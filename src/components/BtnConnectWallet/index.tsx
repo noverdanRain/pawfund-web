@@ -12,19 +12,22 @@ import MainMenuDropdown from "../MainMenuDropdown";
 import { Button } from "../ui/button";
 import { Skeleton } from "../ui/skeleton";
 import { EthereumRoundedIcon } from "@/assets/icons/EthereumRoundedIcon";
+import { useAtomValue } from "jotai";
+import { authedUserAtom } from "@/atom/auth";
 
 export default function BtnWalletConnect() {
 	const { open } = useAppKit();
 	const { isConnected, address } = useAccount();
 	const { isSIWXSuccess } = useAppKitEvents();
+	const authedUser = useAtomValue(authedUserAtom);
 
 	const { mutate: signIn } = useSignIn();
 
 	useEffect(() => {
-		if (isSIWXSuccess && address) {
+		if (isSIWXSuccess && address && !authedUser) {
 			signIn({ address: address });
 		}
-	}, [address, isSIWXSuccess, signIn]);
+	}, [address, authedUser, isSIWXSuccess, signIn]);
 
 	const { data: balance, ...balanceRest } = useBalance({
 		address: address,

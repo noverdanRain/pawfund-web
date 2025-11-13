@@ -1,15 +1,15 @@
 "use client";
 
-import { authedUserAtom, authTokenAtom } from "@/atom/auth";
+import { trpc } from "@/app/_trpc/client";
+import TRPCProvider from "@/app/_trpc/provider";
+import { authedUserAtom } from "@/atom/auth";
 import { projectId, reownConfig, reownMetadata, wagmiAdapter } from "@/config/reownConfig";
 import { CloudAuthSIWX } from "@reown/appkit-siwx";
 import { sepolia } from "@reown/appkit/networks";
 import { createAppKit } from "@reown/appkit/react";
-import { useAtomValue, useSetAtom } from "jotai";
+import { useAtom } from "jotai";
 import { useEffect, type ReactNode } from "react";
 import { cookieToInitialState, WagmiProvider } from "wagmi";
-import { trpc } from "@/app/_trpc/client";
-import TRPCProvider from "@/app/_trpc/provider";
 
 if (!projectId) {
 	throw new Error("Project ID is not defined");
@@ -57,28 +57,21 @@ export default function ContextProvider({
 }
 
 function UserProvider({ children }: { children: ReactNode }) {
-	const token = useAtomValue(authTokenAtom);
-	const setAuthedUser = useSetAtom(authedUserAtom);
-	const { data, refetch, error } = trpc.authRouter.verifyAuth.useQuery(undefined, {
-		enabled: false,
-	});
+	const [authedUser, setAuthedUser] = useAtom(authedUserAtom);
+	const { data, refetch, error } = trpc.authRouter.verifyAuth.useQuery();
 
 	useEffect(() => {
-		if (token) {
-			refetch();
-		} else {
-			setAuthedUser(null);
-		}
-	}, [token, refetch, setAuthedUser]);
-
-	useEffect(() => {
-		if (data && token) {
+		if (data) {
 			setAuthedUser(data);
 		}
-		if (error?.data?.code === "UNAUTHORIZED") {
+		if (error) {
 			setAuthedUser(null);
 		}
-	}, [data, error?.data?.code, setAuthedUser, token]);
+	}, [data, error, setAuthedUser]);
+
+	useEffect(() => {
+		refetch();
+	}, [authedUser, refetch]);
 
 	return <>{children}</>;
 }

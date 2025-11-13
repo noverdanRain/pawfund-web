@@ -60,9 +60,10 @@ export const authRouter = router({
 				}),
 			}),
 		)
-		.mutation(async ({ input }) => {
+		.mutation(async ({ input, ctx }) => {
 			// This is needs to be updated to ensure the security
 			const { address } = input;
+			const { cookie } = ctx;
 			try {
 				const [userExsist] = await db
 					.select({
@@ -79,6 +80,10 @@ export const authRouter = router({
 						type: userExsist.fundraiserId ? "fundraiser" : "donor",
 					};
 					const token = await signJwt(payload);
+					cookie.set("pawfund-auth-token", token, {
+						httpOnly: true,
+						sameSite: "lax",
+					});
 					return {
 						token,
 						payload,
@@ -92,6 +97,10 @@ export const authRouter = router({
 					type: "donor",
 				};
 				const token = await signJwt(payload);
+				cookie.set("pawfund-auth-token", token, {
+					httpOnly: true,
+					sameSite: "lax",
+				});
 				return {
 					token,
 					payload,
@@ -105,6 +114,19 @@ export const authRouter = router({
 				});
 			}
 		}),
+	signOut: privateProcedure.mutation(async ({ ctx }) => {
+		const { cookie } = ctx;
+		try {
+			cookie.delete("pawfund-auth-token");
+		} catch (error) {
+			if (error instanceof TRPCError) throw error;
+			console.error("Failed to sign out:", error);
+			throw new TRPCError({
+				code: "INTERNAL_SERVER_ERROR",
+				message: `Failed to sign out`,
+			});
+		}
+	}),
 	verifyToken: publicProcedure
 		.input(
 			z.object({

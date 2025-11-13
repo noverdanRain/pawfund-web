@@ -23,7 +23,7 @@ export default function CampaignCard(props: CampaignCardProps) {
 		return percentage.toPrecision(2);
 	};
 	return (
-		<Link href={`/${props.address}`}>
+		<Link href={`/c/${props.address}`}>
 			<div className="group min-w-40 cursor-pointer rounded-2xl p-2 transition-all">
 				<div className="relative mx-auto aspect-[16/10] w-full overflow-clip rounded-2xl bg-gray-200">
 					<Image

@@ -15,7 +15,7 @@ import { useLogout } from "@/hooks/useLogout";
 import { useAtomValue } from "jotai";
 import { authedUserAtom } from "@/atom/auth";
 import { Skeleton } from "./ui/skeleton";
-import { useRouter } from "next/navigation";
+import { useRouter } from "nextjs-toploader/app";
 
 interface MainMenuDropdownProps {
 	children?: ReactNode;

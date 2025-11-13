@@ -1,6 +1,6 @@
 import { trpc } from "@/app/_trpc/client";
 import { type trpcServer } from "@/app/_trpc/serverClient";
-import { authedUserAtom, authTokenAtom } from "@/atom/auth";
+import { authedUserAtom } from "@/atom/auth";
 import { MutationConfig } from "@/lib/react-query";
 import { useDisconnect } from "@reown/appkit/react";
 import { useSetAtom } from "jotai";
@@ -11,7 +11,6 @@ type UseSignInParams = {
 };
 
 export function useSignIn(params: UseSignInParams = {}) {
-	const setAuthToken = useSetAtom(authTokenAtom);
 	const setAuthedUser = useSetAtom(authedUserAtom);
 	const { disconnect } = useDisconnect();
 
@@ -29,7 +28,6 @@ export function useSignIn(params: UseSignInParams = {}) {
 				description: `You have successfully signed in.`,
 				id: "sign-in-toast",
 			});
-			setAuthToken(data.token);
 			setAuthedUser(data.payload);
 		},
 		onError: () => {

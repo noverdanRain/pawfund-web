@@ -1,3 +1,8 @@
-export default function AccountPage() {
-	return <h1>Hey Jude</h1>;
+import { withProtectedRoute } from "@/components/ProtectedRoute";
+import AccountPage from "@/pages/Account";
+
+function Account() {
+	return <AccountPage />;
 }
+
+export default withProtectedRoute(Account);

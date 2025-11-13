@@ -1,19 +1,17 @@
 import { verifyJwt } from "@/lib/jwt";
 import { initTRPC, TRPCError } from "@trpc/server";
+import { ReadonlyRequestCookies } from "next/dist/server/web/spec-extension/adapters/request-cookies";
 import { NextRequest } from "next/server";
 
-export const createTRPCContext = (opts: { req: NextRequest }) => {
-	const { req } = opts;
-	return {
-		req,
-	};
+export const createTRPCContext = (opts: { req: NextRequest; cookie: ReadonlyRequestCookies }) => {
+	return opts;
 };
 
 const t = initTRPC.context<ReturnType<typeof createTRPCContext>>().create();
 
 const isAuthed = t.middleware(async ({ ctx, next }) => {
-	const { req } = ctx;
-	const token = req.headers.get("Authorization")?.split(" ")[1];
+	const { cookie } = ctx;
+	const token = cookie.get("pawfund-auth-token")?.value;
 	if (!token)
 		throw new TRPCError({
 			code: "UNAUTHORIZED",
