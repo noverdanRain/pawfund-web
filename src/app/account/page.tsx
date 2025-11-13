@@ -1,5 +1,5 @@
 import { withProtectedRoute } from "@/components/ProtectedRoute";
-import AccountPage from "@/pages/Account";
+import AccountPage from "@/feature-pages/Account";
 
 function Account() {
 	return <AccountPage />;

@@ -1,4 +1,4 @@
-import CampaignDetails from "@/pages/CampaignDetails";
+import CampaignDetails from "@/feature-pages/CampaignDetails";
 
 type Params = Promise<{
 	campaignId: string;

@@ -1,4 +1,4 @@
-import CampaignsPage from "@/pages/Campaigns";
+import CampaignsPage from "@/feature-pages/Campaigns";
 
 type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>;
 
