@@ -1,5 +1,3 @@
-"use client";
-
 import CampaignList from "./components/CampaignList";
 import CampaignPagination from "./components/CampaignPagination";
 import CampaignSort from "./components/CampaignSort";

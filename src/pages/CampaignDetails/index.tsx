@@ -13,9 +13,13 @@ import MoreCampaigns from "./components/MoreCampaigns";
 import DonationField from "./components/DonationField";
 import { formatAddress } from "@/lib/utils";
 import FloatingDonationField from "./components/FloatingDonationField";
+import { useAtomValue } from "jotai";
+import { authedUserAtom } from "@/atom/auth";
 
 export default function CampaignDetails(props: { campaignId: string }) {
 	const { campaignId } = props;
+	const authedUser = useAtomValue(authedUserAtom);
+	console.log({ authedUser });
 
 	return (
 		<main className="mx-auto mt-28 min-h-[calc(100dvh-7rem)] w-[calc(100%-1.5rem)] max-w-6xl">

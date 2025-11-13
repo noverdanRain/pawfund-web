@@ -8,7 +8,7 @@ export default function CampaignList() {
 	// console.log({ campaigns });
 
 	return (
-		<div className="mt-4 grid grid-cols-1 gap-0.5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+		<div className="mt-4 grid grid-cols-2 gap-0.5 md:grid-cols-3 lg:grid-cols-4">
 			{Array.from({ length: 12 }).map((_, idx) => (
 				<CampaignCard
 					image="/placeholder-img.png"

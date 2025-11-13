@@ -1,15 +1,15 @@
 "use client";
 
+import { authedUserAtom, authTokenAtom } from "@/atom/auth";
 import { projectId, reownConfig, reownMetadata, wagmiAdapter } from "@/config/reownConfig";
 import { CloudAuthSIWX } from "@reown/appkit-siwx";
 import { sepolia } from "@reown/appkit/networks";
 import { createAppKit } from "@reown/appkit/react";
+import { useAtomValue, useSetAtom } from "jotai";
 import { useEffect, type ReactNode } from "react";
 import { cookieToInitialState, WagmiProvider } from "wagmi";
-import TRPCProvider from "./_trpc/provider";
-import { useSetAtom } from "jotai";
-import { authedUserAtom } from "@/atom/auth";
 import { trpc } from "./_trpc/client";
+import TRPCProvider from "./_trpc/provider";
 
 if (!projectId) {
 	throw new Error("Project ID is not defined");
@@ -38,7 +38,13 @@ createAppKit({
 	}),
 });
 
-function ContextProvider({ children, cookies }: { children: ReactNode; cookies: string | null }) {
+export default function ContextProvider({
+	children,
+	cookies,
+}: {
+	children: ReactNode;
+	cookies: string | null;
+}) {
 	const initialState = cookieToInitialState(reownConfig, cookies);
 
 	return (
@@ -50,16 +56,29 @@ function ContextProvider({ children, cookies }: { children: ReactNode; cookies: 
 	);
 }
 
-export default ContextProvider;
-
 function UserProvider({ children }: { children: ReactNode }) {
+	const token = useAtomValue(authTokenAtom);
 	const setAuthedUser = useSetAtom(authedUserAtom);
-	const getAuth = trpc.authRouter.verifyAuth.useQuery();
+	const { data, refetch, error } = trpc.authRouter.verifyAuth.useQuery(undefined, {
+		enabled: false,
+	});
 
 	useEffect(() => {
-		if (getAuth.data) {
-			setAuthedUser(getAuth.data);
+		if (token) {
+			refetch();
+		} else {
+			setAuthedUser(null);
 		}
-	}, [getAuth.data, setAuthedUser]);
+	}, [token, refetch, setAuthedUser]);
+
+	useEffect(() => {
+		if (data && token) {
+			setAuthedUser(data);
+		}
+		if (error?.data?.code === "UNAUTHORIZED") {
+			setAuthedUser(null);
+		}
+	}, [data, error?.data?.code, setAuthedUser, token]);
+
 	return <>{children}</>;
 }

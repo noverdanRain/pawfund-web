@@ -1,3 +1,5 @@
+"use client";
+
 import { Badge, BadgeButton } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import { ArrowUpDown, X } from "lucide-react";
