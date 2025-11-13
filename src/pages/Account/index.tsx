@@ -1,20 +1,18 @@
 "use client";
 
+import { trpc } from "@/app/_trpc/client";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { formatAddress } from "@/lib/utils";
 import { ArrowLeft, Copy, User } from "lucide-react";
 import { useRouter } from "nextjs-toploader/app";
-import { Card } from "./Card";
-import { useAtomValue } from "jotai";
-import { authedUserAtom } from "@/atom/auth";
 import { toast } from "sonner";
+import { Card } from "./Card";
 import { AccountLoading } from "./Loading";
 
 export default function AccountPage() {
-	const authedUser = useAtomValue(authedUserAtom);
+	const account = trpc.accountRouter.getAccount.useQuery();
 	const router = useRouter();
 	const handleBack = () => {
 		router.back();
@@ -28,26 +26,22 @@ export default function AccountPage() {
 				<h4 className="text-xl font-bold">Account</h4>
 			</header>
 
-			{authedUser === null && <AccountLoading />}
-			{authedUser && (
+			{(account.isLoading || account.isRefetching) && <AccountLoading />}
+			{account.data && (
 				<div className="mt-8 space-y-4">
 					<Card
-						title="You are a supporter"
-						description="Supporters are individuals who care about animal welfare and want to help. They can explore donation campaigns, contribute funds, and share rescue stories to spread awareness."
+						title={`You're a ${account.data.type}`}
+						description={
+							account.data?.type === "donor"
+								? "Donors are individuals who care about animal welfare and want to help. They can explore donation campaigns, contribute funds, and share rescue stories to spread awareness."
+								: "A fundraiser is an organization or individual representing a shelter, rescue team, or animal focused foundation who creates a campaign to raise funds for medical care, food, sheltering, and animal rescue operations."
+						}
 					>
-						<Button
-							onClick={() => {
-								toast.error("This feature is not implemented yet. Please check back later.");
-							}}
-							className="mt-2"
-							size={"lg"}
-							variant={"outline"}
-							shape={"circle"}
-						>
-							Change Into a Fundraiser
+						<Button className="mt-2" size={"lg"} variant={"outline"} shape={"circle"}>
+							Change into a {account.data?.type === "donor" ? "fundraiser" : "donor"}
 						</Button>
 					</Card>
-					{authedUser?.type === "fundraiser" && (
+					{account.data.type === "fundraiser" && (
 						<>
 							<Card
 								title="Fundraiser Avatar"
@@ -81,6 +75,7 @@ export default function AccountPage() {
 								description="This is your account's name displayed on PawFund."
 							>
 								<Input
+									defaultValue={account.data?.name ?? ""}
 									className="border border-gray-300 bg-transparent"
 									variant={"lg"}
 									placeholder="e.g. Albuquerque Animal Shelter"
@@ -91,6 +86,7 @@ export default function AccountPage() {
 							</Card>
 							<Card title="Email" description="This is email used to public can contact you.">
 								<Input
+									defaultValue={account.data?.email ?? ""}
 									className="border border-gray-300 bg-transparent"
 									variant={"lg"}
 									placeholder="e.g. animalshelter@example.com"
@@ -105,37 +101,12 @@ export default function AccountPage() {
 								description="Add a link to your official website or profile (Instagram, Facebook, etc)."
 							>
 								<Input
+									defaultValue={account.data?.socialUrl ?? ""}
 									className="border border-gray-300 bg-transparent"
 									variant={"lg"}
 									placeholder="e.g. https://instagram.com/albuquerque_animalshelter"
 									type="url"
 								/>
-								<Button className="mt-2" size={"lg"} variant={"outline"} shape={"circle"}>
-									Save
-								</Button>
-							</Card>
-							<Card
-								title="Location"
-								description="Let supporters know where your as fundraiser is based. This helps build transparency and trust."
-							>
-								<div className="flex flex-col gap-4 sm:flex-row">
-									<div className="w-full space-y-2">
-										<Label className="text-sm">Country</Label>
-										<Input
-											className="mt-1 border border-gray-300 bg-transparent"
-											variant={"lg"}
-											placeholder="e.g. United States"
-										/>
-									</div>
-									<div className="w-full space-y-2">
-										<Label className="text-sm">Zip Code</Label>
-										<Input
-											className="mt-1 border border-gray-300 bg-transparent"
-											variant={"lg"}
-											placeholder="e.g. 87102"
-										/>
-									</div>
-								</div>
 								<Button className="mt-2" size={"lg"} variant={"outline"} shape={"circle"}>
 									Save
 								</Button>
@@ -147,13 +118,8 @@ export default function AccountPage() {
 						description="Wallet to access blockchain features like secure donations, on chain campaign tracking, and contribution history."
 					>
 						<div className="flex items-center gap-4">
-							<p className="font-medium sm:hidden">
-								{formatAddress("0xA7Dd557C3628e35D4CC9618F13Aa94D57FDb7E7C", 8)}
-							</p>
-							<p className="hidden font-medium sm:block">
-								{"0xA7Dd557C3628e35D4CC9618F13Aa94D57FDb7E7C"}
-							</p>
-
+							<p className="font-medium sm:hidden">{formatAddress(account.data?.address, 8)}</p>
+							<p className="hidden font-medium sm:block">{account.data?.address}</p>
 							<Copy size={12} />
 						</div>
 					</Card>
