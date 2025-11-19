@@ -1,9 +1,9 @@
-import { REOWN_PROJECT_ID } from "./envVars";
-import { cookieStorage, createStorage } from "@wagmi/core";
 import { WagmiAdapter } from "@reown/appkit-adapter-wagmi";
 import { sepolia } from "@reown/appkit/networks";
+import { cookieStorage, createStorage } from "@wagmi/core";
+import { env } from "./env";
 
-export const projectId = REOWN_PROJECT_ID;
+export const projectId = env.NEXT_PUBLIC_REOWN_PROJECT_ID;
 
 if (!projectId) {
 	throw new Error("Reown project ID is not defined");

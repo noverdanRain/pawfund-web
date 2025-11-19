@@ -5,8 +5,8 @@ import {
 	AlertDialogHeader,
 	AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import { ENVIRONMENT } from "@/config/envVars";
-const isProduction = ENVIRONMENT === "production";
+import { env } from "@/config/env";
+const isProduction = env.NEXT_PUBLIC_ENVIRONMENT === "production";
 
 export default function DevelopmentAlert() {
 	return <Dialog />;

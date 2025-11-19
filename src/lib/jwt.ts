@@ -1,10 +1,10 @@
 import "server-only";
 
-import { JWT_SECRET } from "@/config/envVars";
-import { SignJWT, jwtVerify } from "jose";
+import { env } from "@/config/env";
 import { Payload } from "@/types";
+import { SignJWT, jwtVerify } from "jose";
 
-const secret = new TextEncoder().encode(JWT_SECRET);
+const secret = new TextEncoder().encode(env.JWT_SECRET);
 
 export async function signJwt(payload: Payload): Promise<string> {
 	return new SignJWT(payload)

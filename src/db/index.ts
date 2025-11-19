@@ -1,10 +1,10 @@
 "server only";
 
-import { DATABASE_URL } from "@/config/envVars";
+import { env } from "@/config/env";
 import { drizzle } from "drizzle-orm/mysql2";
 import mysql from "mysql2/promise";
 
-const url = DATABASE_URL;
+const url = env.DATABASE_URL;
 
 if (!url) {
 	throw new Error("Database URL is undefined");

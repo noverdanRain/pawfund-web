@@ -4,8 +4,8 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { httpBatchLink } from "@trpc/client";
 import React, { useState } from "react";
 
-import { BASE_URL } from "@/config/envVars";
 import { makeQueryClient, trpc } from "./client";
+import { env } from "@/config/env";
 
 let clientQueryClientSingleton: QueryClient;
 function getQueryClient() {
@@ -23,7 +23,7 @@ export default function TRPCProvider(props: { children: React.ReactNode }) {
 		trpc.createClient({
 			links: [
 				httpBatchLink({
-					url: `${BASE_URL}/api/trpc`,
+					url: `${env.NEXT_PUBLIC_BASE_URL}/api/trpc`,
 				}),
 			],
 		}),
