@@ -1,13 +1,12 @@
 "use client";
 
-import { trpc } from "@/app/_trpc/client";
 import TRPCProvider from "@/app/_trpc/provider";
-import { authedUserAtom } from "@/atom/auth";
+import { initAuthAtom } from "@/atom/auth";
 import { projectId, reownConfig, reownMetadata, wagmiAdapter } from "@/config/reownConfig";
 import { CloudAuthSIWX } from "@reown/appkit-siwx";
 import { sepolia } from "@reown/appkit/networks";
 import { createAppKit } from "@reown/appkit/react";
-import { useAtom } from "jotai";
+import { useSetAtom } from "jotai";
 import { useEffect, type ReactNode } from "react";
 import { cookieToInitialState, WagmiProvider } from "wagmi";
 
@@ -46,32 +45,16 @@ export default function ContextProvider({
 	cookies: string | null;
 }) {
 	const initialState = cookieToInitialState(reownConfig, cookies);
+	const initAuthUser = useSetAtom(initAuthAtom);
+
+	useEffect(() => {
+		initAuthUser({ type: "INIT" });
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
 
 	return (
 		<WagmiProvider config={reownConfig} initialState={initialState}>
-			<TRPCProvider>
-				<UserProvider>{children}</UserProvider>
-			</TRPCProvider>
+			<TRPCProvider>{children}</TRPCProvider>
 		</WagmiProvider>
 	);
-}
-
-function UserProvider({ children }: { children: ReactNode }) {
-	const [authedUser, setAuthedUser] = useAtom(authedUserAtom);
-	const { data, refetch, error } = trpc.authRouter.verifyAuth.useQuery();
-
-	useEffect(() => {
-		if (data) {
-			setAuthedUser(data);
-		}
-		if (error) {
-			setAuthedUser(null);
-		}
-	}, [data, error, setAuthedUser]);
-
-	useEffect(() => {
-		refetch();
-	}, [authedUser, refetch]);
-
-	return <>{children}</>;
 }

@@ -1,7 +1,9 @@
+"use server";
+
 import { verifyJwt } from "@/lib/jwt";
 import { cookies } from "next/headers";
 
-export async function getAuthedUser() {
+export async function getAuthUser() {
 	const cookieStore = await cookies();
 	const token = cookieStore.get("pawfund-auth-token")?.value;
 	if (!token) return null;

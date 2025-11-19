@@ -7,15 +7,14 @@ import {
 	DropdownMenuSeparator,
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Menu, User, LogOut, HelpCircle, Wallet, HandHeart, Plus } from "lucide-react";
+import { useAuthUser } from "@/hooks/useAuthUser";
+import { useLogout } from "@/hooks/useLogout";
+import { useAppKit } from "@reown/appkit/react";
+import { HandHeart, HelpCircle, LogOut, Menu, Plus, User, Wallet } from "lucide-react";
+import { useRouter } from "nextjs-toploader/app";
 import { memo, ReactNode } from "react";
 import { Button } from "./ui/button";
-import { useAppKit } from "@reown/appkit/react";
-import { useLogout } from "@/hooks/useLogout";
-import { useAtomValue } from "jotai";
-import { authedUserAtom } from "@/atom/auth";
 import { Skeleton } from "./ui/skeleton";
-import { useRouter } from "nextjs-toploader/app";
 
 interface MainMenuDropdownProps {
 	children?: ReactNode;
@@ -24,7 +23,7 @@ interface MainMenuDropdownProps {
 const MainMenuDropdown = memo(function MainMenuDropdown({ children }: MainMenuDropdownProps) {
 	const { open: openWallet } = useAppKit();
 	const { disconnect: disconnectWallet } = useLogout();
-	const authedUser = useAtomValue(authedUserAtom);
+	const { user, isLoading } = useAuthUser();
 	const router = useRouter();
 
 	return (
@@ -37,9 +36,9 @@ const MainMenuDropdown = memo(function MainMenuDropdown({ children }: MainMenuDr
 				)}
 			</DropdownMenuTrigger>
 			<DropdownMenuContent align="end" sideOffset={8} className="w-56 rounded-2xl">
-				{authedUser ? (
+				{user && (
 					<>
-						{authedUser?.type === "fundraiser" && (
+						{user?.type === "fundraiser" && (
 							<Button variant={"outline"} className="mt-1 mb-1.5 w-full rounded-lg shadow-none">
 								<Plus className="mr-2 h-4 w-4" />
 								<span>Create Campaign</span>
@@ -53,7 +52,7 @@ const MainMenuDropdown = memo(function MainMenuDropdown({ children }: MainMenuDr
 							<Wallet className="mr-2 h-4 w-4" />
 							<span>Wallet</span>
 						</DropdownMenuItem>
-						{authedUser?.type === "fundraiser" && (
+						{user?.type === "fundraiser" && (
 							<DropdownMenuItem>
 								<HandHeart className="mr-2 h-4 w-4" />
 								<span>My Campaign</span>
@@ -69,9 +68,8 @@ const MainMenuDropdown = memo(function MainMenuDropdown({ children }: MainMenuDr
 							<span>Log out</span>
 						</DropdownMenuItem>
 					</>
-				) : (
-					<Skeleton className="h-36 w-full rounded-lg bg-gray-100" />
 				)}
+				{isLoading && <Skeleton className="h-36 w-full rounded-lg bg-gray-100" />}
 			</DropdownMenuContent>
 		</DropdownMenu>
 	);

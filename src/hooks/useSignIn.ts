@@ -1,6 +1,6 @@
 import { trpc } from "@/app/_trpc/client";
 import { type trpcServer } from "@/app/_trpc/serverClient";
-import { authedUserAtom } from "@/atom/auth";
+import { authErrorAtom, authLoadingAtom, initAuthAtom } from "@/atom/auth";
 import { MutationConfig } from "@/lib/react-query";
 import { useDisconnect } from "@reown/appkit/react";
 import { useSetAtom } from "jotai";
@@ -11,12 +11,16 @@ type UseSignInParams = {
 };
 
 export function useSignIn(params: UseSignInParams = {}) {
-	const setAuthedUser = useSetAtom(authedUserAtom);
+	const setAuthedUser = useSetAtom(initAuthAtom);
+	const setLoadingUser = useSetAtom(authLoadingAtom);
+	const setErrorUser = useSetAtom(authErrorAtom);
 	const { disconnect } = useDisconnect();
 
 	return trpc.authRouter.signIn.useMutation({
 		...params.mutationConfig,
 		onMutate: () => {
+			setLoadingUser(true);
+			setErrorUser(null);
 			toast.loading("Just a moment", {
 				description: `Verifying your wallet address `,
 				id: "sign-in-toast",
@@ -28,7 +32,9 @@ export function useSignIn(params: UseSignInParams = {}) {
 				description: `You have successfully signed in.`,
 				id: "sign-in-toast",
 			});
-			setAuthedUser(data.payload);
+			setAuthedUser({ type: "SET_USER", payload: data.payload });
+			setLoadingUser(false);
+			setErrorUser(null);
 		},
 		onError: () => {
 			toast.error("Sign In Failed", {
@@ -36,6 +42,8 @@ export function useSignIn(params: UseSignInParams = {}) {
 				id: "sign-in-toast",
 			});
 			disconnect();
+			setLoadingUser(false);
+			setErrorUser("Failed to sign in user");
 		},
 	});
 }

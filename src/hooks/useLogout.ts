@@ -1,19 +1,19 @@
 import { trpc } from "@/app/_trpc/client";
-import { authedUserAtom } from "@/atom/auth";
+import { initAuthAtom } from "@/atom/auth";
 import { useDisconnect as useAppkitDisconnect } from "@reown/appkit/react";
 import { useSetAtom } from "jotai";
 import { useDisconnect } from "wagmi";
 
 export function useLogout() {
-	const setAuthedUser = useSetAtom(authedUserAtom);
+	const setAuthUser = useSetAtom(initAuthAtom);
 
 	const { mutate: signOut } = trpc.authRouter.signOut.useMutation({
-		onError: (error) => {
-			console.error("Logout failed:", error);
-		},
 		onSuccess: () => {
-			setAuthedUser(null);
+			setAuthUser({ type: "CLEAR" });
 			disconnect();
+		},
+		onError: (error) => {
+			console.log("Logout failed:", error);
 		},
 	});
 	const { disconnect } = useAppkitDisconnect();
