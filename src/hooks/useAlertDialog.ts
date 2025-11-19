@@ -1,8 +1,8 @@
 import { alertDialogAtom, AlertDialogType } from "@/atom/components";
-import { useAtom } from "jotai";
+import { useSetAtom } from "jotai";
 
 export function useAlertDialog(params: Omit<AlertDialogType, "isOpen">) {
-	const [alertDialog, setAlertDialog] = useAtom(alertDialogAtom);
+	const setAlertDialog = useSetAtom(alertDialogAtom);
 	const alert = () => {
 		setAlertDialog({
 			isOpen: true,

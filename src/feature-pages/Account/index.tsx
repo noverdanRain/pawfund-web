@@ -10,6 +10,7 @@ import { useRouter } from "nextjs-toploader/app";
 import { Card } from "./Card";
 import { AccountLoading } from "./Loading";
 import { useAlertDialog } from "@/hooks/useAlertDialog";
+import { useCopyClipboard } from "@/hooks/useCopyClipboard";
 
 const descs = {
 	donor:
@@ -20,6 +21,7 @@ const descs = {
 
 export default function AccountPage() {
 	const account = trpc.accountRouter.getAccount.useQuery();
+	const copy = useCopyClipboard();
 	const alertChangeRole = useAlertDialog({
 		title: "Are you sure?",
 		description: "This action cannot be undone.",
@@ -137,7 +139,9 @@ export default function AccountPage() {
 						<div className="flex items-center gap-4">
 							<p className="font-medium sm:hidden">{formatAddress(account.data?.address, 8)}</p>
 							<p className="hidden font-medium sm:block">{account.data?.address}</p>
-							<Copy size={12} />
+							<button className="cursor-pointer" onClick={() => copy(account.data?.address || "")}>
+								<Copy size={12} />
+							</button>
 						</div>
 					</Card>
 				</div>
