@@ -7,8 +7,8 @@ import { Input } from "@/components/ui/input";
 import { formatAddress } from "@/lib/utils";
 import { ArrowLeft, Copy, User } from "lucide-react";
 import { useRouter } from "nextjs-toploader/app";
-import { Card } from "./Card";
-import { AccountLoading } from "./Loading";
+import { Card } from "./components/Card";
+import { AccountLoading } from "./components/Loading";
 import { useAlertDialog } from "@/hooks/useAlertDialog";
 import { useCopyClipboard } from "@/hooks/useCopyClipboard";
 
