@@ -1,13 +1,10 @@
 "use client";
 
-import TRPCProvider from "@/app/_trpc/provider";
-import { initAuthAtom } from "@/atom/auth";
 import { projectId, reownConfig, reownMetadata, wagmiAdapter } from "@/config/reownConfig";
 import { CloudAuthSIWX } from "@reown/appkit-siwx";
 import { sepolia } from "@reown/appkit/networks";
 import { createAppKit } from "@reown/appkit/react";
-import { useSetAtom } from "jotai";
-import { useEffect, type ReactNode } from "react";
+import { type ReactNode } from "react";
 import { cookieToInitialState, WagmiProvider } from "wagmi";
 
 if (!projectId) {
@@ -37,7 +34,7 @@ createAppKit({
 	}),
 });
 
-export default function ContextProvider({
+export default function Web3Provider({
 	children,
 	cookies,
 }: {
@@ -45,16 +42,10 @@ export default function ContextProvider({
 	cookies: string | null;
 }) {
 	const initialState = cookieToInitialState(reownConfig, cookies);
-	const initAuthUser = useSetAtom(initAuthAtom);
-
-	useEffect(() => {
-		initAuthUser({ type: "INIT" });
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, []);
 
 	return (
 		<WagmiProvider config={reownConfig} initialState={initialState}>
-			<TRPCProvider>{children}</TRPCProvider>
+			{children}
 		</WagmiProvider>
 	);
 }

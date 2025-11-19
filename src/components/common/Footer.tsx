@@ -1,6 +1,6 @@
 import { PawCircular } from "@/assets/icons/PawCircular";
 import { cn } from "@/lib/utils";
-import HalfCirc from "./half-circ.svg";
+import HalfCirc from "@/assets/half-circ.svg";
 import Image from "next/image";
 import { HeartDrawLine } from "@/assets/icons/HeartDrawLine";
 import Link from "next/link";

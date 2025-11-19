@@ -1,8 +1,10 @@
-import ComponentsProvider from "@/components/provider/ComponentsProvider";
-import ContextProvider from "@/components/provider/ContextProvider";
-import type { Metadata } from "next";
+import { metadata } from "@/config/globalMetadata";
 import { Bagel_Fat_One, Space_Grotesk } from "next/font/google";
 import { headers } from "next/headers";
+import ComponentsProvider from "./_provider/components-provider";
+import ContextProvider from "./_provider/context-provider";
+import TRPCProvider from "./_provider/trpc-provider";
+import Web3Provider from "./_provider/web3-provider";
 import "./globals.css";
 
 const bagelFatOne = Bagel_Fat_One({
@@ -16,58 +18,7 @@ const spaceGrotesk = Space_Grotesk({
 	subsets: ["latin"],
 });
 
-export const metadata: Metadata = {
-	title: "Pawfund - A Fundraising Platform for Animals",
-	description:
-		"Pawfund is a fundraising platform designed specifically for animals, helping pet owners raise funds for their furry friends' medical needs and other expenses.",
-	keywords: [
-		"pawfund",
-		"pet fundraising",
-		"animal welfare",
-		"pet medical expenses",
-		"crowdfunding for animals",
-		"pet care",
-		"support animals",
-	],
-	openGraph: {
-		title: "Pawfund - A Fundraising Platform for Animals",
-		description:
-			"Pawfund is a fundraising platform designed specifically for animals, helping pet owners raise funds for their furry friends' medical needs and other expenses.",
-		url: "https://pawfunding.vercel.app",
-		siteName: "Pawfund",
-		type: "website",
-		images: [
-			{
-				url: "/og-image/default.png",
-				width: 900,
-				height: 73,
-				alt: "Pawfund - A Fundraising Platform for Animals",
-			},
-		],
-	},
-	twitter: {
-		card: "summary_large_image",
-		title: "Pawfund - A Fundraising Platform for Animals",
-		description:
-			"Pawfund is a fundraising platform designed specifically for animals, helping pet owners raise funds for their furry friends' medical needs and other expenses.",
-		images: [
-			{
-				url: "/og-image/default.png",
-				width: 900,
-				height: 73,
-				alt: "Pawfund - A Fundraising Platform for Animal",
-			},
-		],
-	},
-	icons: {
-		icon: "/logo-icon.svg",
-	},
-	themeColor: "#ffffff",
-	applicationName: "Pawfund",
-	creator: "@pawfunding",
-};
-
-export default async function RootLayout({
+async function RootLayout({
 	children,
 }: Readonly<{
 	children: React.ReactNode;
@@ -78,10 +29,17 @@ export default async function RootLayout({
 	return (
 		<html lang="en" className="text-[15px] sm:text-base">
 			<body className={`${bagelFatOne.variable} ${spaceGrotesk.variable} font-sans antialiased`}>
-				<ContextProvider cookies={cookies}>
-					<ComponentsProvider>{children}</ComponentsProvider>
-				</ContextProvider>
+				<Web3Provider cookies={cookies}>
+					<TRPCProvider>
+						<ContextProvider>
+							<ComponentsProvider>{children}</ComponentsProvider>
+						</ContextProvider>
+					</TRPCProvider>
+				</Web3Provider>
 			</body>
 		</html>
 	);
 }
+
+export { metadata };
+export default RootLayout;

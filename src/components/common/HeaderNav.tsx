@@ -1,8 +1,8 @@
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Search } from "lucide-react";
-import BtnWalletConnect from "../BtnConnectWallet";
 import Link from "next/link";
+import { ConnectWalletButton } from "./ConnectWalletButton";
 
 export default function HeaderNav() {
 	return (
@@ -26,7 +26,7 @@ export default function HeaderNav() {
 				>
 					<Search />
 				</Button>
-				<BtnWalletConnect />
+				<ConnectWalletButton />
 			</div>
 		</header>
 	);

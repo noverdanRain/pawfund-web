@@ -13,8 +13,8 @@ import { useAppKit } from "@reown/appkit/react";
 import { HandHeart, HelpCircle, LogOut, Menu, Plus, User, Wallet } from "lucide-react";
 import { useRouter } from "nextjs-toploader/app";
 import { memo, ReactNode } from "react";
-import { Button } from "./ui/button";
-import { Skeleton } from "./ui/skeleton";
+import { Button } from "../ui/button";
+import { Skeleton } from "../ui/skeleton";
 
 interface MainMenuDropdownProps {
 	children?: ReactNode;

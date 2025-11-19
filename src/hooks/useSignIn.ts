@@ -1,5 +1,5 @@
-import { trpc } from "@/app/_trpc/client";
-import { type trpcServer } from "@/app/_trpc/serverClient";
+import { cilentSideTRPC } from "@/app/_provider/trpc-provider/clientSide";
+import { type serverSideTRPC } from "@/app/_provider/trpc-provider/serverSide";
 import { authErrorAtom, authLoadingAtom, initAuthAtom } from "@/atom/auth";
 import { MutationConfig } from "@/lib/react-query";
 import { useDisconnect } from "@reown/appkit/react";
@@ -7,7 +7,7 @@ import { useSetAtom } from "jotai";
 import { toast } from "sonner";
 
 type UseSignInParams = {
-	mutationConfig?: MutationConfig<typeof trpcServer.authRouter.signIn>;
+	mutationConfig?: MutationConfig<typeof serverSideTRPC.authRouter.signIn>;
 };
 
 export function useSignIn(params: UseSignInParams = {}) {
@@ -16,7 +16,7 @@ export function useSignIn(params: UseSignInParams = {}) {
 	const setErrorUser = useSetAtom(authErrorAtom);
 	const { disconnect } = useDisconnect();
 
-	return trpc.authRouter.signIn.useMutation({
+	return cilentSideTRPC.authRouter.signIn.useMutation({
 		...params.mutationConfig,
 		onMutate: () => {
 			setLoadingUser(true);

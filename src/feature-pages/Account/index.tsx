@@ -1,6 +1,6 @@
 "use client";
 
-import { trpc } from "@/app/_trpc/client";
+import { cilentSideTRPC } from "@/app/_provider/trpc-provider/clientSide";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -20,7 +20,7 @@ const descs = {
 };
 
 export default function AccountPage() {
-	const account = trpc.accountRouter.getAccount.useQuery();
+	const account = cilentSideTRPC.accountRouter.getAccount.useQuery();
 	const copy = useCopyClipboard();
 	const alertChangeRole = useAlertDialog({
 		title: "Are you sure?",
@@ -44,7 +44,7 @@ export default function AccountPage() {
 			</header>
 
 			{(account.isLoading || account.isRefetching) && <AccountLoading />}
-			{account.data && (
+			{account.data && !account.isRefetching && (
 				<div className="mt-8 space-y-4">
 					<Card
 						title={`You're a ${account.data.type}`}

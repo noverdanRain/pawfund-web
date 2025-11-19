@@ -12,14 +12,14 @@ import { ChevronDown } from "lucide-react";
 import { useEffect } from "react";
 import { sepolia } from "viem/chains";
 import { useAccount, useBalance } from "wagmi";
-import MainMenuDropdown from "../MainMenuDropdown";
+import MainMenuDropdown from "./MainMenuDropdown";
 import { Button } from "../ui/button";
 import { Skeleton } from "../ui/skeleton";
-import { trpc } from "@/app/_trpc/client";
+import { cilentSideTRPC } from "@/app/_provider/trpc-provider/clientSide";
 
-export default function BtnWalletConnect() {
+export function ConnectWalletButton() {
 	const { open } = useAppKit();
-	const utils = trpc.useUtils();
+	const utils = cilentSideTRPC.useUtils();
 	const { isConnected, address, isReconnecting } = useAccount();
 	const { isSIWXSuccess } = useAppKitEvents();
 	const setAuthUser = useSetAtom(authUserAtom);

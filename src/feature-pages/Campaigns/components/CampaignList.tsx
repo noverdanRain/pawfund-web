@@ -1,12 +1,8 @@
 "use client";
 
-import { trpc } from "@/app/_trpc/client";
-import CampaignCard from "@/components/CampaignCard";
+import CampaignCard from "@/components/common/CampaignCard";
 
 export default function CampaignList() {
-	// const { data: campaigns } = trpc.campaignsRouter.getCampaigns.useQuery({});
-	// console.log({ campaigns });
-
 	return (
 		<div className="mt-4 grid grid-cols-2 gap-0.5 md:grid-cols-3 lg:grid-cols-4">
 			{Array.from({ length: 12 }).map((_, idx) => (

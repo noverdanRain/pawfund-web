@@ -3,14 +3,11 @@ import { defaultShouldDehydrateQuery, QueryClient } from "@tanstack/react-query"
 
 import type { AppRouter } from "@/server";
 
-export const trpc = createTRPCReact<AppRouter>({});
+export const cilentSideTRPC = createTRPCReact<AppRouter>({});
 
 export function makeQueryClient() {
 	return new QueryClient({
 		defaultOptions: {
-			queries: {
-				staleTime: 30 * 1000,
-			},
 			dehydrate: {
 				// serializeData: superjson.serialize,
 				shouldDehydrateQuery: (query) =>

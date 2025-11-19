@@ -1,5 +1,5 @@
 import { PawCircular } from "@/assets/icons/PawCircular";
-import CampaignCard from "@/components/CampaignCard";
+import CampaignCard from "@/components/common/CampaignCard";
 import { Button } from "@/components/ui/button";
 
 export default function OverviewSection() {

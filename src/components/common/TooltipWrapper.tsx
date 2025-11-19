@@ -96,7 +96,6 @@ export function TooltipWrapper({
 	open,
 	onOpenChange,
 }: TooltipWrapperProps) {
-	// Jika disabled, render children saja tanpa tooltip
 	if (disabled || !content) {
 		return <>{children}</>;
 	}

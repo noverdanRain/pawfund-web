@@ -2,7 +2,7 @@ import { cn } from "@/lib/utils";
 import Image from "next/image";
 import { Progress } from "../ui/progress";
 import { Goal, Heart } from "lucide-react";
-import { TooltipWrapper } from "../TooltipWrapper";
+import { TooltipWrapper } from "./TooltipWrapper";
 import Link from "next/link";
 
 interface CampaignCardProps {

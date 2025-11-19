@@ -1,4 +1,4 @@
-import { trpc } from "@/app/_trpc/client";
+import { cilentSideTRPC } from "@/app/_provider/trpc-provider/clientSide";
 import { initAuthAtom } from "@/atom/auth";
 import { useDisconnect as useAppkitDisconnect } from "@reown/appkit/react";
 import { useSetAtom } from "jotai";
@@ -6,9 +6,9 @@ import { useDisconnect } from "wagmi";
 
 export function useLogout() {
 	const setAuthUser = useSetAtom(initAuthAtom);
-	const utils = trpc.useUtils();
+	const utils = cilentSideTRPC.useUtils();
 
-	const { mutate: signOut } = trpc.authRouter.signOut.useMutation({
+	const { mutate: signOut } = cilentSideTRPC.authRouter.signOut.useMutation({
 		onSuccess: () => {
 			setAuthUser({ type: "CLEAR" });
 			disconnect();
