@@ -15,10 +15,12 @@ import { useAccount, useBalance } from "wagmi";
 import MainMenuDropdown from "../MainMenuDropdown";
 import { Button } from "../ui/button";
 import { Skeleton } from "../ui/skeleton";
+import { trpc } from "@/app/_trpc/client";
 
 export default function BtnWalletConnect() {
 	const { open } = useAppKit();
-	const { isConnected, address } = useAccount();
+	const utils = trpc.useUtils();
+	const { isConnected, address, isReconnecting } = useAccount();
 	const { isSIWXSuccess } = useAppKitEvents();
 	const setAuthUser = useSetAtom(authUserAtom);
 	const { user, isLoading } = useAuthUser();
@@ -34,8 +36,9 @@ export default function BtnWalletConnect() {
 	useEffect(() => {
 		if (address !== user?.address) {
 			setAuthUser(null);
+			utils.accountRouter.getAccount.invalidate();
 		}
-	}, [address, user?.address, setAuthUser]);
+	}, [address, user?.address, setAuthUser, utils.accountRouter.getAccount]);
 
 	const { data: balance, ...balanceRest } = useBalance({
 		address: address,
@@ -44,7 +47,7 @@ export default function BtnWalletConnect() {
 
 	return (
 		<>
-			{isConnected ? (
+			{isConnected || isReconnecting ? (
 				<MainMenuDropdown>
 					<Button
 						shape="circle"
@@ -52,7 +55,7 @@ export default function BtnWalletConnect() {
 						size="lg"
 						className="flex items-center gap-2 bg-gray-200 font-medium ring-2 ring-white hover:bg-gray-200/80"
 					>
-						{isLoading ? (
+						{isLoading || isReconnecting ? (
 							<Skeleton className="h-3 w-40 rounded-full bg-gray-300" />
 						) : (
 							<>

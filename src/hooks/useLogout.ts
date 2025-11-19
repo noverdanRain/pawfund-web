@@ -6,6 +6,7 @@ import { useDisconnect } from "wagmi";
 
 export function useLogout() {
 	const setAuthUser = useSetAtom(initAuthAtom);
+	const utils = trpc.useUtils();
 
 	const { mutate: signOut } = trpc.authRouter.signOut.useMutation({
 		onSuccess: () => {
@@ -21,6 +22,7 @@ export function useLogout() {
 		mutation: {
 			onSuccess() {
 				signOut();
+				utils.accountRouter.getAccount.invalidate();
 			},
 		},
 	});

@@ -9,11 +9,27 @@ import { ArrowLeft, Copy, User } from "lucide-react";
 import { useRouter } from "nextjs-toploader/app";
 import { Card } from "./Card";
 import { AccountLoading } from "./Loading";
+import { useAlertDialog } from "@/hooks/useAlertDialog";
+
+const descs = {
+	donor:
+		"Donors are individuals who care about animal welfare and want to help. They can explore donation campaigns, contribute funds, and share rescue stories to spread awareness.",
+	fundraiser:
+		"A fundraiser is an organization or individual representing a shelter, rescue team, or animal focused foundation who creates a campaign to raise funds for medical care, food, sheltering, and animal rescue operations.",
+};
 
 export default function AccountPage() {
 	const account = trpc.accountRouter.getAccount.useQuery();
+	const alertChangeRole = useAlertDialog({
+		title: "Are you sure?",
+		description: "This action cannot be undone.",
+		variant: "destructive",
+		onAction: () => console.log("Change account type action triggered"),
+		onCancel: () => console.log("Change account type cancelled"),
+	});
 	const router = useRouter();
 	const handleBack = () => {
+		// alert("serius?");
 		router.back();
 	};
 	return (
@@ -30,13 +46,15 @@ export default function AccountPage() {
 				<div className="mt-8 space-y-4">
 					<Card
 						title={`You're a ${account.data.type}`}
-						description={
-							account.data?.type === "donor"
-								? "Donors are individuals who care about animal welfare and want to help. They can explore donation campaigns, contribute funds, and share rescue stories to spread awareness."
-								: "A fundraiser is an organization or individual representing a shelter, rescue team, or animal focused foundation who creates a campaign to raise funds for medical care, food, sheltering, and animal rescue operations."
-						}
+						description={account.data?.type === "donor" ? descs.donor : descs.fundraiser}
 					>
-						<Button className="mt-2" size={"lg"} variant={"outline"} shape={"circle"}>
+						<Button
+							onClick={alertChangeRole}
+							className="mt-2"
+							size={"lg"}
+							variant={"outline"}
+							shape={"circle"}
+						>
 							Change into a {account.data?.type === "donor" ? "fundraiser" : "donor"}
 						</Button>
 					</Card>

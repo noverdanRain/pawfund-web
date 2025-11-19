@@ -7,6 +7,7 @@ import HeaderNav from "../HeaderNav";
 import { usePathname } from "next/navigation";
 import { pathNotIncludeHeaderFooter } from "@/constants";
 import NextTopLoader from "nextjs-toploader";
+import { AlertDialogProvider } from "../ui/alert-dialog";
 
 export default function ComponentsProvider({ children }: { children: React.ReactNode }) {
 	const pathname = usePathname();
@@ -21,6 +22,7 @@ export default function ComponentsProvider({ children }: { children: React.React
 			{isIncludeHeaderFooter && <Footer />}
 			<DevelopmentAlert />
 			<Toaster />
+			<AlertDialogProvider />
 			<div className="isolate" />
 		</>
 	);
